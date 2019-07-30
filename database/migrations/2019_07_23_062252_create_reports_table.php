@@ -21,7 +21,6 @@ class CreateReportsTable extends Migration
             $table->string('description', 250);
             $table->string('status', 100);
             $table->string('comment', 100);
-            $table->boolean('overtime');
             $table->string('attachment',100);
             $table->rememberToken();
             $table->timestamps();

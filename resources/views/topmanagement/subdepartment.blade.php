@@ -50,15 +50,20 @@
 
 						</div>
 						<div class="row" style="margin-top: 20px;">
+
+
+
 							
 							@foreach($staffs as $staff)
-							<div class="col-lg-3 col-md-3 col-sm-3 mb">
+							<div class="col-lg-4 col-md-4 col-sm-4 mb">
 								<div class="content-panel pn">
 									<div id="profile-02">
 										<div class="user">
 
-										<?php
-											if(isset($staff->sub_department) && ($staff->sub_department=='marketing_seo')){
+
+											<?php
+
+											if(isset($staff->sub_department) && $staff->sub_department=='marketing_seo'){
 												$sub_department = 'SEO';
 											} elseif($staff->sub_department=='it_app'){
 												$sub_department = 'APP';
@@ -71,20 +76,28 @@
 											} elseif($staff->sub_department=='management_operation'){
 												$sub_department = 'Operation';
 											}
-										?>
+											?>
 
-
-
+											{{--<img src="photo_storage/{{$staff->email}}-{{$staff->name}}.jpg" class="img-circle" width="80">--}}
 											<h4>{{$sub_department}} Team</h4>
+
+
 										</div>
 									</div>
+									{{--<div class="pr2-social centered">
+										
+										<a href="/viewemployee/{{$staff->id}}" class="btn btn-sm btn-clear-g" style="margin-top: 10px; color: #3d3d3d;">View Team</a>
+									</div>--}}
+
 									<div class="pr2-social centered">
 										<a href="/management/subdept/{{$staff->sub_department}}" class="btn btn-sm btn-clear-g" style="margin-top: 10px; color: #3d3d3d;">View Team</a>
 									</div>
+
 								</div>
 								
 							</div>
 							@endforeach
+
 
 						</div>
 

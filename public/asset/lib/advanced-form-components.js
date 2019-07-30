@@ -8,6 +8,27 @@
         $('.default-date-picker').datepicker({
             format: 'mm-dd-yyyy'
         });
+
+
+       /* var today = new Date();
+        $('.newdate-picker').datepicker({
+            format: 'mm-dd-yyyy',
+            autoclose:true,
+            endDate: "today",
+            maxDate: today
+        }).on('changeDate', function (ev) {
+            $(this).datepicker('hide');
+        });*/
+
+
+
+
+        /*$( ".newdate-picker" ).datepicker({
+            format: 'mm-dd-yyyy',
+            maxDate: new Date()
+        });*/
+
+
         $('.dpYears').datepicker();
         $('.dpMonths').datepicker();
 

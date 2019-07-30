@@ -42,7 +42,7 @@
         </li>
 
         <li class="sub-menu">
-         <a href="#">
+         <a href="/management">
           <i class="fa fa-bookmark"></i>
           <span>Management</span>
         </a>

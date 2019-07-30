@@ -72,6 +72,32 @@
 
 
                         <div class="form-group row">
+                            <label for="subdepartment" class="col-md-4 col-form-label text-md-right">{{ __('Sub Department') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="subdepartment" type="text" class="form-control @error('subdepartment') is-invalid @enderror" name="subdepartment" value="{{ old('subdepartment') }}" required autocomplete="subdepartment" autofocus>
+                                    <option disabled=""> Select Sub Department</option>
+                                    <option value="it_app">IT - App</option>
+                                    <option value="it_blockchain">IT - Blockchain</option>
+                                    <option value="it_security">IT - Security</option>
+                                    <option value="it_content">Marketing - Content</option>
+                                    <option value="marketing_seo">Marketing - SEO</option>
+                                    <option value="marketing_support">Marketing - Support</option>
+                                    <option value="marketing_operation">Management - Operation</option>
+                                </select>
+
+
+                                @error('subdepartment')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row">
                             <label for="position" class="col-md-4 col-form-label text-md-right">{{ __('Position') }}</label>
 
                             <div class="col-md-6">

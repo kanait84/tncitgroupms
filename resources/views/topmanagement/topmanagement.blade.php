@@ -59,7 +59,7 @@
 										<div class="row">
 											<h3 class="centered">
 
-												<button type="button" class="btn btn-primary btn-sm">View Report</button>
+												<a type="button" class="btn btn-primary btn-sm" href="/management">View Report</a>
 
 											</h3>
 											<div class="col-sm-6 col-xs-6 pull-left">

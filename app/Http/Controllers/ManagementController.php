@@ -15,20 +15,30 @@ class ManagementController extends Controller
 	}
 	public function management()
 	{
-
-		if(Auth::user()->department == 'marketing_department' && Auth::user()->type == 'management'){
-			$staffs = User::where('department', 'marketing_department')->with('reports')->get();
+		if(Auth::user()->department == 'marketing_department' && (Auth::user()->type == 'management' || Auth::user()->type == 'topmanagement')){
+            $staffs = User::where('department', 'marketing_department')->groupBy('sub_department')->with('reports')->get();
 		}
 
-		elseif(Auth::user()->department == 'it_department' && Auth::user()->type == 'management'){
+        elseif(Auth::user()->department == 'management_department' && (Auth::user()->type == 'management' || Auth::user()->type == 'topmanagement')){
+            $staffs = User::where('department', 'management_department')->groupBy('sub_department')->with('reports')->get();
+        }
 
-			$staffs = User::where('department', 'it_department')->with('reports')->get();
-
+		elseif(Auth::user()->department == 'it_department' && (Auth::user()->type == 'management' || Auth::user()->type == 'topmanagement')){
+			$staffs = User::where('department', 'it_department')->select('sub_department')->distinct()->with('reports')->get();
 		}
-
-
-
-
-		return view('management.management', compact('staffs'));
+		return view('management.management', compact('staffs', 'sub_departments'));
 	}
+
+
+    public function subdepartments(Request $request, $d_id)
+    {
+        $staffs = User::where('sub_department', $request->d_id)->get();
+    	// dd($staffs);
+
+    	$d_id = $request->d_id;
+      
+        return view('management.sub_departments', compact('staffs', 'd_id'));
+    }
+
+
 }

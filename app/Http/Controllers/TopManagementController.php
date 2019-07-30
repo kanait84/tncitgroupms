@@ -23,13 +23,14 @@ class TopManagementController extends Controller
 
 	public function itDepartment(){
 
-		$staffs = User::where('department', 'it_department')->with('reports')->get();
-		return view('topmanagement.department',compact('staffs'));
+		$staffs = User::where('department', 'it_department')->groupBy('sub_department')->with('reports')->get();
+		return view('topmanagement.subdepartment',compact('staffs'));
 	}
 
 	public function marketingDepartment(){
-		$staffs = User::where('department', 'marketing_department')->with('reports')->get();
-		return view('topmanagement.department',compact('staffs'));
+
+        $staffs = User::where('department', 'marketing_department')->groupBy('sub_department')->with('reports')->get();
+		return view('topmanagement.subdepartment',compact('staffs'));
 	}
 
 
@@ -39,11 +40,10 @@ class TopManagementController extends Controller
 		
 	}
 
-
 	public function managementDepartment(){
 		$staffs = User::where('department', 'management_department')->with('reports')->get();
 		return view('topmanagement.department',compact('staffs'));
-		
+
 	}
 
 	public function viewemployee(Request $request, $id)

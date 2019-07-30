@@ -61,8 +61,6 @@
                     <tr>
                       <th>Report Date</th>
 
-                      <th>Start Date</th>
-                      <th class="hidden-phone">Overtime</th>
                       <th class="">Action</th>
                     </tr>
                   </thead>
@@ -74,16 +72,7 @@
                     @forelse($reports as $report)
                     <tr class="gradeA">
                       <td>{{$report->date}}</td>
-                      <td>{{$report->task_date}}</td>
 
-                      @if($report->overtime == "on")
-                      <td class="center hidden-phone">
-                        <span class="label label-success">Overtime</span>
-                      </td>
-                      @else
-                      <td class="center hidden-phone">No overtime</td>
-
-                      @endif
                       <td>
                         <a href="/reportdetails/{{$report->r_id}}" type="button" class="btn btn-theme btn-xs">view report</a> 
                       </td>

@@ -55,11 +55,11 @@ class HomeController extends Controller
         $report = new Report;
         $report->u_id = Auth::user()->id;
         $report->date = $request->date;
-        $report->task_date = $request->task_date;
+        //$report->task_date = $request->task_date;
 
         $report->description = $request->description;
         $report->comment = $request->comment;
-        $report->overtime = $request->overtime;
+        //$report->overtime = $request->overtime;
         $report->attachment = $request->attachment;
         
 

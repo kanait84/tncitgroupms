@@ -28,15 +28,19 @@ Route::get('/admin', 'AdminController@admin')
 ->middleware('admin')    
 ->name('admin');
 
-Route::get('/admin', 'AdminController@admin')    
-->middleware('admin')    
-->name('admin');
+
+// Registration Routes...
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register')->middleware('admin')  ;
+Route::post('register', 'Auth\RegisterController@register')->middleware('admin')  ;
 
 
 // management
 Route::get('/management', 'ManagementController@management')    
-->middleware('is_management')    
+//->middleware('is_management')
 ->name('management');
+
+Route::get('/management/subdept/{d_id}', 'ManagementController@subdepartments')
+    ->name('subdept');
 
 // topmanagement
 Route::get('/topmanagement', 'TopManagementController@topmanagement')    
@@ -55,6 +59,7 @@ Route::get('/marketing', 'TopManagementController@marketingDepartment')
 ->name('is_topmanagement');
 
 Route::get('/empreportdetails/{r_id}', 'TopManagementController@topReportDetails')->name('empreportdetails');
+
 
 
 

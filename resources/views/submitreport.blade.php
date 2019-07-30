@@ -4,6 +4,29 @@
 @include('layout.head')
 <link rel="stylesheet" type="text/css" href="asset/lib/bootstrap-fileupload/bootstrap-fileupload.css" />
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+	jQuery(document).ready(function( $ ) {
+		var today = new Date();
+		$('.newdate-picker').datepicker({
+			format: 'mm-dd-yyyy',
+			autoclose:true,
+			endDate: "today",
+			maxDate: today
+		}).on('changeDate', function (ev) {
+			$(this).datepicker('hide');
+		});
+
+
+		$('.newdate-picker').keyup(function () {
+			if (this.value.match(/[^0-9]/g)) {
+				this.value = this.value.replace(/[^0-9^-]/g, '');
+			}
+		});
+	});
+</script>
 <body>
 
 	<section id="container">
@@ -22,22 +45,21 @@
 							<form class="form-horizontal style-form" method="post" action="postReport" enctype="multipart/form-data" autocomplete="off" style="margin-left: 20px; padding-top: 20px; padding-bottom: 20px;">
 								{{ csrf_field() }}
 
-
 								<div class="form-group">
 									<label class="control-label col-md-2">Date</label>
 									<div class="col-md-3 col-xs-11">
-										<input class="form-control form-control-inline input-medium default-date-picker " size="16" type="text" value="" name="date" id="date" required="">
+										<input class="form-control form-control-inline input-medium newdate-picker " size="16" type="text" value="" name="date" id="date" required="">
 										<span class="help-block">Select date</span>
 									</div>
 								</div>
 
-								<div class="form-group">
+								{{--<div class="form-group">
 									<label class="control-label col-md-2">Task Date</label>
 									<div class="col-md-3 col-xs-11">
 										<input class="form-control form-control-inline input-medium default-date-picker " size="16" type="text" value="" name="task_date" id="task_date" required="">
 										<span class="help-block">Select the date where your task started.</span>
 									</div>
-								</div>
+								</div>--}}
 
 
 								<div class="form-group">
@@ -50,16 +72,14 @@
 								</div>
 
 
-								<div class="form-group">
+								{{--<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">Overtime</label>
 									<div class="col-sm-1 text-center">
 										<div class="switch switch-square" data-on-label="<i class=' fa fa-check'></i>" data-off-label="<i class='fa fa-times'></i>">
 											<input type="checkbox"  name="overtime" id="overtime" />
 										</div>
 									</div>
-
-							
-								</div>
+								</div>--}}
 
 								<div class="form-group">
 									<label class="control-label col-md-2">Without input</label>

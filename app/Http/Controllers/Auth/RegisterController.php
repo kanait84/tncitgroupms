@@ -53,6 +53,7 @@ class RegisterController extends Controller
             'type' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'department' => ['required', 'string'],
+            'subdepartment' => ['required', 'string'],
             'position' => ['required', 'string'],
             'mobile' => ['required', 'numeric'],
             'password' => ['required', 'string', 'min:8', 'confirmed'], 
@@ -72,6 +73,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'department' => $data['department'],
+            'subdepartment' => $data['subdepartment'],
             'position' => $data['position'],
             'email' => $data['email'],
             'mobile' => $data['mobile'],

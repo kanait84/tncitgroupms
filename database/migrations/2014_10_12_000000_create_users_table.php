@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('mobile', 100)->unqiue();
             $table->string('type', 100);
             $table->string('department', 100);
+            $table->string('subdepartment', 100);
             $table->string('position', 100);
             $table->string('emp_photo', 100);
             $table->timestamp('email_verified_at')->nullable();

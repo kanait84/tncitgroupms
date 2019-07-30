@@ -21,14 +21,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'mobile', 'department', 'position', 'emp_photo', 'type',
+        'name', 'email', 'password', 'mobile', 'department', 'subdepartment', 'position', 'emp_photo', 'type',
     ];
 
 
     public function isAdmin()    {        
         return $this->type === self::ADMIN_TYPE;    
     }
-
 
     public function isManagement()    {        
         return $this->type === self::MANAGEMENT_TYPE;    
