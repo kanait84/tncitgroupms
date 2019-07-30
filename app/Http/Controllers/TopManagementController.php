@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
+use App\Comment;
 
 use DB;
 
@@ -48,15 +49,14 @@ class TopManagementController extends Controller
 
 	public function viewemployee(Request $request, $id)
 	{
-		$employee = User::where('id', $id)->with('reports')->first(); 
+		$employee = User::where('id', $id)->with('reports', 'comment')->first(); 
 		return view('topmanagement.staffreport', compact('employee'));
 	}
 
-	    public function topReportDetails(Request $request, $r_id)
+	public function topReportDetails(Request $request, $r_id)
     {
-        $report = Report::where('r_id', $r_id)->with('user')->first(); 
-        // dd($report); 
-  
+        $report = Report::where('r_id', $r_id)->with('user', 'comments')->first();          
+      
         return view('topmanagement.staffreportdetails', compact('report'));
     }
 

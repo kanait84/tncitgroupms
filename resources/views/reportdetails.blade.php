@@ -84,7 +84,6 @@ if (window.sidebar){
                   <p>No Attachment</p>
                   @endif
                 </p>
-
               </div>
 
 
@@ -95,7 +94,7 @@ if (window.sidebar){
               <div class="showback">
                 <h4><i class="fa fa-angle-right"></i> Report Details</h4>
                 <p>Task Start Date: <span class="badge bg-success">{{$report->task_date}}</span></p>
-                <p>Overtime: 
+                <p>Overtime:
 
                   @if($report->overtime == "")
                   <span class="badge">No overtime</span>

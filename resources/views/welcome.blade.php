@@ -38,6 +38,15 @@
         position: absolute;
         right: 10px;
         top: 18px;
+        /* height: 50px; */
+        padding: 10px;
+        background-color: #000;
+        color: #fff !important;
+        border-radius: 5px;
+    }
+    .top-right a{
+
+        color: #ffffff !important;
     }
 
     .content {
@@ -45,7 +54,7 @@
     }
 
     .title {
-        font-size: 84px;
+        font-size: 50px;
     }
 
     .links > a {
@@ -65,9 +74,33 @@
     .tnc {
         margin-right: 25px;
     }
-</style>
+        .bck-img{
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            overflow: hidden;
+        }
+    .btm-br{
+        position: fixed;
+        display: block;
+        width: 100%;
+        bottom: 0px;
+        left: 0px;
+        padding-top: 40px;
+        /* margin: auto; */
+        padding: auto;
+        height: 70px;
+        background-color: rgba(255, 255, 255, 0.72);
+
+    }
+
+    </style>
 </head>
 <body>
+
+<img class="bck-img" src="asset/img/bck.png" >
     <div class="flex-center position-ref full-height">
         @if (Route::has('login'))
         <div class="top-right links">
@@ -84,14 +117,18 @@
         @endif
 
         <div class="content">
-          <img src="asset/img/abbc.jpg" height="300px">
+          <img src="asset/img/abbc.png" height="200px">
           <div class="title m-b-md">
            TNC IT GROUP <br>MANAGEMENT SYSTEM
 
         </div>
+
+            <hr>
+            <div style="padding-top: 30px" class="btm-br">
         <img src="asset/img/tnc.svg" height="30px" class="tnc"> &nbsp
         <img src="asset/img/adn_logo.png" height="30px">
         <img src="asset/img/logo.png" height="30px">
+            </div>
 
 
 

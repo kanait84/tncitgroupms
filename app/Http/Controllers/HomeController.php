@@ -73,10 +73,7 @@ class HomeController extends Controller
             $report->file_type = $originalFile;
             $request->filename = $filename;
         }
-
-
         // dd($originalFile);
-        
 
         $report->save();
         return redirect('/home'); 

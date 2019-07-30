@@ -53,15 +53,6 @@
 									</div>
 								</div>
 
-								{{--<div class="form-group">
-									<label class="control-label col-md-2">Task Date</label>
-									<div class="col-md-3 col-xs-11">
-										<input class="form-control form-control-inline input-medium default-date-picker " size="16" type="text" value="" name="task_date" id="task_date" required="">
-										<span class="help-block">Select the date where your task started.</span>
-									</div>
-								</div>--}}
-
-
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">Detailed Report</label>
 									<div class="col-sm-10">
@@ -70,16 +61,6 @@
 										<div class="validate"></div>
 									</div>
 								</div>
-
-
-								{{--<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">Overtime</label>
-									<div class="col-sm-1 text-center">
-										<div class="switch switch-square" data-on-label="<i class=' fa fa-check'></i>" data-off-label="<i class='fa fa-times'></i>">
-											<input type="checkbox"  name="overtime" id="overtime" />
-										</div>
-									</div>
-								</div>--}}
 
 								<div class="form-group">
 									<label class="control-label col-md-2">Without input</label>

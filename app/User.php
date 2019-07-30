@@ -77,5 +77,15 @@ class User extends Authenticatable
         return $this->belongsTo('App\Report', 'u_id', 'id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'u_id', 'id');
+    }
+
+    public function comment()
+    {
+        return $this->belongsTo('App\Comment', 'u_id', 'id');
+    }
+
 
 }

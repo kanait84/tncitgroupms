@@ -97,22 +97,17 @@ if (window.sidebar){
               <div class="showback">
                 <h4><i class="fa fa-angle-right"></i> Report Details</h4>
                 <p>Task Start Date: <span class="badge bg-success">{{$report->task_date}}</span></p>
-                <p>Overtime: 
-
-                  @if($report->overtime == "")
-                  <span class="badge">No overtime</span>
-                  @else
-                  <span class="badge bg-success"> Overtime</span>
-                  @endif
-                </span>
-              </p>
-
-
             </div>
             <!-- /showback -->
             <!--  LABELS -->
             <div class="showback">
-              <h4><i class="fa fa-angle-right"></i> Manager's Comment</h4> 
+              <h4><i class="fa fa-angle-right"></i> Manager's Comment</h4>
+
+              <form id="commentform">
+                @csrf          
+
+                <input type="hidden" name="u_id" value="{{$report->user->id}}">
+                <input type="hidden" name="r_id" value="{{$report->r_id}}">
               <div class="alert alert-success" style="background-color: #efefef">
                 <p>
                   @if($report->comment == "")
@@ -120,7 +115,7 @@ if (window.sidebar){
                   <div class="form-group">
 
                     <div class="col-sm-12">
-                      <textarea class="form-control" name="description" id="description" placeholder="Daily Report Details" rows="5" data-rule="required" data-msg="Please write your daily report"></textarea>
+                      <textarea class="form-control" name="comment" id="comment" placeholder="Daily Report Details" rows="5" required></textarea>
                <br>
                       <button type="submit" class="btn btn-xs btn-theme">Post Comment</button>
                       <div class="validate"></div>
@@ -128,11 +123,62 @@ if (window.sidebar){
                   </div>
                   No comment yet.
                   @else
-                  {{$report->comment}}
+                  <!-- {{$report->comment}} -->
 
                   @endif
                 </p>
               </div>
+              </form>
+              <!-- where the response will be displayed -->
+              <div id='response'></div>
+
+              <?php  
+               foreach($report->comments as $k=>$v) {
+                          echo "<div align='left' style='border:1px solid; padding:5px;'> 
+                                <p>".$v->u_id."</p>";
+
+                          echo "<p>".$v->comment."</p></div> <p>&nbsp;</p>";
+                      } 
+              ?>
+
+              <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
+              <script>
+                $(document).ready(function(){
+                  $('#commentform').submit(function(){
+
+                    // show that something is loading
+                    $('#response').html("<b>Loading response...</b>");
+
+                    /*
+                     * 'post_receiver.php' - where you will pass the form data
+                     * $(this).serialize() - to easily read form data
+                     * function(data){... - data contains the response from post_receiver.php
+                     */
+                    $.ajax({
+                      type: 'POST',
+                      url: '/post_comments',
+                      data: $(this).serialize()
+                    })
+                            .done(function(data){
+                                
+                              // show the response
+                              $('#response').html(data);
+
+                            })
+                            .fail(function() {
+
+                              // just in case posting your form failed
+                              alert( "Posting failed." );
+
+                            });
+
+                    // to prevent refreshing the whole page page
+                    return false;
+
+                  });
+                });
+              </script>
+
             </div>
             <!-- /showback -->
           </div>

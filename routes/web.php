@@ -34,6 +34,10 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 Route::post('register', 'Auth\RegisterController@register')->middleware('admin')  ;
 
 
+/*Route::get('/empreportdetails/{r_id}', 'ManagementController@savecomments')->name('savecomments');
+Route::post('/empreportdetails/{r_id}', 'ManagementController@savecomments')->name('savecomments');*/
+
+
 // management
 Route::get('/management', 'ManagementController@management')    
 //->middleware('is_management')
@@ -60,6 +64,8 @@ Route::get('/marketing', 'TopManagementController@marketingDepartment')
 
 Route::get('/empreportdetails/{r_id}', 'TopManagementController@topReportDetails')->name('empreportdetails');
 
+Route::get('/post_comments', 'ManagementController@savecomments')->name('post_comments');
+Route::post('/post_comments', 'ManagementController@savecomments')->name('post_comments');
 
 
 

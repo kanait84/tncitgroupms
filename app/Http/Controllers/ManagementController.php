@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
@@ -37,6 +38,19 @@ class ManagementController extends Controller
       
         return view('management.sub_departments', compact('staffs', 'd_id'));
     }
+
+
+    public function savecomments(Request $request)
+    {
+        $comment = new Comment;
+        $comment->r_id = $request->r_id;
+        $comment->u_id = $request->u_id;
+        $comment->comment = $request->comment;
+        $comment->save();       
+        return "Comment has been posted successfully!";        
+    }
+
+
 
 
 }
