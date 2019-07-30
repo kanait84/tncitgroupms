@@ -26,15 +26,13 @@ class ManagementController extends Controller
 		elseif(Auth::user()->department == 'it_department' && (Auth::user()->type == 'management' || Auth::user()->type == 'topmanagement')){
 			$staffs = User::where('department', 'it_department')->select('sub_department')->distinct()->with('reports')->get();
 		}
-		return view('management.management', compact('staffs', 'sub_departments'));
+		return view('management.management', compact('staffs'));
 	}
 
 
     public function subdepartments(Request $request, $d_id)
     {
         $staffs = User::where('sub_department', $request->d_id)->get();
-    	// dd($staffs);
-
     	$d_id = $request->d_id;
       
         return view('management.sub_departments', compact('staffs', 'd_id'));
