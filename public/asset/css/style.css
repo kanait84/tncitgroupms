@@ -768,7 +768,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 
 .ds {
 	background: #d6d9dc;
-	padding-top: 20px;
+	padding: 0px
 }
 
 .ds h4 {
@@ -929,7 +929,6 @@ PANELS CONFIGURATIONS
 /*Panel Size*/
 
 .pn {
-	height: 250px;
 	box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 
@@ -1081,8 +1080,8 @@ PANELS CONFIGURATIONS
 .content-panel {
 	background: #ffffff;
 	box-shadow: 0px 3px 2px #aab2bd;
-	padding-top: 15px;
-	padding-bottom: 5px;
+	padding-top: 10px;
+    padding-bottom: 5px;
 }
 .content-panel h4 {
 	margin-left: 10px;
@@ -1181,6 +1180,7 @@ PANELS CONFIGURATIONS
 /* Message Panel */
 .message-p {
 	background: #f5f5f5;
+    border-top: 2px solid #dcdfe3;
 }
 .message-p .message-header {
 	background: #dcdfe3;
@@ -1201,7 +1201,6 @@ PANELS CONFIGURATIONS
 	margin-top: -10px;
 }
 .message-p name {
-	color: #ed5565;
 	font-weight: 700;
 }
 .message-p .message {
@@ -1374,14 +1373,7 @@ PANELS CONFIGURATIONS
 }
 
 /* Calendar Configuration */
-#calendar {
-	color: #22242a;
-	padding: 0px !important;
-    background-color: #fff;
-}
-.calendar-month-header {
-	background: #43b1a9;
-}
+
 
 /* TODO PANEL */
 .steps{
@@ -1500,7 +1492,8 @@ PANELS CONFIGURATIONS
 
 /* Profile 02*/
 #profile-02 {
-	background: url(../img/profile-02.jpg) no-repeat center top;
+	/*background: url(../img/profile-02.jpg) no-repeat center top;*/
+    background-color: #2e2e2e;
 	margin-top: -15px;
 	background-attachment: relative;
 	background-position: center center;
@@ -1522,7 +1515,7 @@ PANELS CONFIGURATIONS
 #profile-02 h4 {
 	color: white;
 	margin:0px;
-	padding-top: 8px;
+	padding-top: 50px;
 }
 .pr2-social a {
 	color: #cdcdcd;
@@ -1557,7 +1550,7 @@ PANELS CONFIGURATIONS
     background: #99c262;
     width: 100%;
     -webkit-border-radius: 0px 0px 4px 4px;
-    border-radius: 0px 0px 4px 4px;
+    border-radius: 0px;
 }
 #barchart {
     margin-bottom: -15px;
@@ -2022,12 +2015,14 @@ ul li {
 
 /* PROFILE PAGE CONF */
 .profile-pic img {
-	width: 130px;
-	height: 130px;
+	width: 110px;
+	height: 110px;
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	border: 10px solid #f1f2f7;
-	margin-top: 20px;
+	margin-top: 10px;
+    display: block;
+    margin: auto;
 }
 
 .profile-text h6 {
@@ -3486,5 +3481,38 @@ ul.chat-available-user li a:hover {
   color: #fff;
 }
 
+div.zabuto_calendar .table tr td div.day{
 
+    color: #fff;
+}
+div.zabuto_calendar .table tr.calendar-dow-header th{
+    color: #fff;
+}
+div.zabuto_calendar .table tr.calendar-month-header th span{
+    color: #fff;
+}
+div.zabuto_calendar div.legend span{
+    display: none;
+}
 
+.panel {
+
+    border-radius: 0px;
+}
+.calendar-month-header {
+    background: #43b1a9;
+}
+
+.p-bck{
+
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.pic-comment img{
+
+    height: 70px;
+    width: 70px;
+    border: 5px solid #f1f2f7;
+}

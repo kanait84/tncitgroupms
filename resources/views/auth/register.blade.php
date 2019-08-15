@@ -16,6 +16,8 @@
 
                             <div class="col-md-6">
                                 <select id="type" type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type') }}" required autocomplete="type" autofocus>
+
+
                                     <option> Select Account Type</option>
                                     <option value="admin">Administrator</option>
                                     <option value="topmanagement">Top Management</option>
@@ -52,13 +54,14 @@
                             <label for="department" class="col-md-4 col-form-label text-md-right">{{ __('Department') }}</label>
 
                             <div class="col-md-6">
-                                <select id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}" required autocomplete="department" autofocus>
+                                <select id="d_id" type="text" class="form-control @error('department') is-invalid @enderror" name="d_id" value="{{ old('d_id') }}" required autocomplete="d_id" autofocus>
                                     <option disabled=""> Select Department</option>
-                                    <option value="it_department">I.T. Department</option>
-                                    <option value="marketing_department">Marketing Department</option>
-                                    <option value="accounting_department">Accounting Department</option>
-                                    <option value="management_department">Management Department</option>
-                                    <option value="hr_department">Human Resource Department</option>
+
+                                    @forelse($departments as $department)
+                                    <option value="{{$department->d_id}}">{{$department->d_title}}</option>
+                                    @empty
+                                    @endforelse
+
                                 </select>
 
 
@@ -75,19 +78,19 @@
                             <label for="subdepartment" class="col-md-4 col-form-label text-md-right">{{ __('Sub Department') }}</label>
 
                             <div class="col-md-6">
-                                <select id="subdepartment" type="text" class="form-control @error('subdepartment') is-invalid @enderror" name="subdepartment" value="{{ old('subdepartment') }}" required autocomplete="subdepartment" autofocus>
-                                    <option disabled=""> Select Sub Department</option>
-                                    <option value="it_app">IT - App</option>
-                                    <option value="it_blockchain">IT - Blockchain</option>
-                                    <option value="it_security">IT - Security</option>
-                                    <option value="it_content">Marketing - Content</option>
-                                    <option value="marketing_seo">Marketing - SEO</option>
-                                    <option value="marketing_support">Marketing - Support</option>
-                                    <option value="marketing_operation">Management - Operation</option>
+                                <select id="sd_id" type="text" class="form-control @error('subdepartment') is-invalid @enderror" name="sd_id" value="{{ old('sd_id') }}" required autocomplete="sd_id" autofocus>
+                                    <option > Select Sub Department</option>
+
+
+                                    @forelse($subdepartments as $subdepartment)
+                                    <option value="{{$subdepartment->sd_id}}">{{$subdepartment->sd_title}}</option>
+                                    @empty
+                                    @endforelse
+
                                 </select>
 
 
-                                @error('subdepartment')
+                                @error('sub_department')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

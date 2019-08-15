@@ -50,8 +50,8 @@ if (window.sidebar){
                 <h6>{{$report->user->position}}}}</h6>
                 <p>{{$report->user->email}}}} || {{$report->user->mobile}} </p>
                 <br>
-                <p>  
-                  <a class="btn btn-theme" href="/viewemployee/{{$report->user->id}}"><i class="fa fa-upload"></i> View All Report</a></p>
+                <p>
+                  <a class="btn btn-theme" href="{{ url('viewemployee')."/".$report->user->id}}"><i class="fa fa-upload"></i> View All Report</a></p>
                 </div>
                 <!-- /col-md-4 -->
                 <div class="col-md-4 centered">
@@ -65,9 +65,9 @@ if (window.sidebar){
                 </div>
               </div>
 
-            </div> 
+            </div>
             <h3><i class="fa fa-angle-right"></i> Reprot Details <span class="badge bg-success">{{$report->date}}</span></h3>
-            
+
 
             <div class="col-lg-6 col-md-6 col-sm-12">
               <!--  ALERTS EXAMPLES -->
@@ -96,7 +96,7 @@ if (window.sidebar){
 
               <div class="showback">
                 <h4><i class="fa fa-angle-right"></i> Report Details</h4>
-                <p>Task Start Date: <span class="badge bg-success">{{$report->task_date}}</span></p>
+                <p>Date: <span class="badge bg-success">{{$report->date}}</span></p>
             </div>
             <!-- /showback -->
             <!--  LABELS -->
@@ -104,50 +104,52 @@ if (window.sidebar){
               <h4><i class="fa fa-angle-right"></i> Manager's Comment</h4>
 
               <form id="commentform">
-                @csrf          
+                @csrf
 
                 <input type="hidden" name="u_id" value="{{$report->user->id}}">
                 <input type="hidden" name="r_id" value="{{$report->r_id}}">
               <div class="alert alert-success" style="background-color: #efefef">
                 <p>
-                  @if($report->comment == "")
+
 
                   <div class="form-group">
 
                     <div class="col-sm-12">
                       <textarea class="form-control" name="comment" id="comment" placeholder="Daily Report Details" rows="5" required></textarea>
                <br>
-                      <button type="submit" class="btn btn-xs btn-theme">Post Comment</button>
+                      <button type="submit" name="submit" class="btn btn-xs btn-theme">Post Comment</button>
                       <div class="validate"></div>
                     </div>
                   </div>
-                  No comment yet.
-                  @else
-                  <!-- {{$report->comment}} -->
 
-                  @endif
+                    <p>&nbsp;</p>
                 </p>
               </div>
               </form>
               <!-- where the response will be displayed -->
               <div id='response'></div>
+                <div id='all_posts'>
+              <?php
+              $user_details = array_reverse($user_details);
+               foreach($user_details as $k=>$v) {
+                $cid = $v['commentid'];
+                $rid = $v['rid'];
 
-              <?php  
-               foreach($report->comments as $k=>$v) {
-                          echo "<div align='left' style='border:1px solid; padding:5px;'> 
-                                <p>".$v->u_id."</p>";
-
-                          echo "<p>".$v->comment."</p></div> <p>&nbsp;</p>";
-                      } 
-              ?>
-
+                  echo "<div align='left' style='border:1px solid; font-weight:bold;'>
+                        <p style='color:#48BCB4;'>".ucfirst($v['type'])."</p>
+                        <p><h5 style='color:#48cfad;'>".$v['name']."</h5>
+                        <a href='/deletecomment/$cid/$rid' style='color:red;'>Delete</a> </p>
+                        <p style='color:#2e6da4;'>".$v['created']."</p>
+                        <p>".$v['comment']."</p></div> <p>&nbsp;</p>";
+              } ?>
+              </div>
               <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
               <script>
                 $(document).ready(function(){
                   $('#commentform').submit(function(){
 
                     // show that something is loading
-                    $('#response').html("<b>Loading response...</b>");
+                    //$('#response').html("<b>Loading response...</b>");
 
                     /*
                      * 'post_receiver.php' - where you will pass the form data
@@ -160,9 +162,9 @@ if (window.sidebar){
                       data: $(this).serialize()
                     })
                             .done(function(data){
-                                
+
                               // show the response
-                              $('#response').html(data);
+                              $('#all_posts').html(data);
 
                             })
                             .fail(function() {
@@ -174,18 +176,15 @@ if (window.sidebar){
 
                     // to prevent refreshing the whole page page
                     return false;
-
                   });
+
+
                 });
               </script>
 
             </div>
             <!-- /showback -->
           </div>
-
-
-
-
 
 
         </section>
@@ -256,7 +255,7 @@ if (window.sidebar){
       var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
 
       sOut += '<tr><td>Manager Comment:</td><td>{{ $report->comment === "" ? "No comment" : $report->comment}}</td></tr>';
-      
+
       sOut += '</table>';
 
       return sOut;

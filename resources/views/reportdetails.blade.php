@@ -50,8 +50,8 @@ if (window.sidebar){
                 <h6>{{Auth::user()->position}}</h6>
                 <p>{{Auth::user()->email}} || {{Auth::user()->mobile}} </p>
                 <br>
-                <p>  
-                  <a class="btn btn-theme" href="/submitreport"><i class="fa fa-upload"></i> Submit Daily Report</a></p>
+                <p>
+                  <a class="btn btn-theme" href="{{ url('submitreport') }}"><i class="fa fa-upload"></i> Submit Daily Report</a></p>
                 </div>
                 <!-- /col-md-4 -->
                 <div class="col-md-4 centered">
@@ -65,9 +65,9 @@ if (window.sidebar){
                 </div>
               </div>
 
-            </div> 
-            <h3><i class="fa fa-angle-right"></i> Reprot Details <span class="badge bg-success">{{$report->date}}</span></h3>
-            
+            </div>
+            <h3><i class="fa fa-angle-right"></i> Report Details <span class="badge bg-success">{{$report->date}}</span></h3>
+
 
             <div class="col-lg-6 col-md-6 col-sm-12">
               <!--  ALERTS EXAMPLES -->
@@ -93,34 +93,83 @@ if (window.sidebar){
 
               <div class="showback">
                 <h4><i class="fa fa-angle-right"></i> Report Details</h4>
-                <p>Task Start Date: <span class="badge bg-success">{{$report->task_date}}</span></p>
-                <p>Overtime:
-
-                  @if($report->overtime == "")
-                  <span class="badge">No overtime</span>
-                  @else
-                  <span class="badge bg-success"> Overtime</span>
-                  @endif
-                </span>
-              </p>
-
-
+                <p>Task Date: <span class="badge bg-success">{{$report->date}}</span></p>
             </div>
             <!-- /showback -->
             <!--  LABELS -->
-            <div class="showback">
-              <h4><i class="fa fa-angle-right"></i> Manager's Comment</h4>
-              <div class="alert alert-success" style="background-color: #efefef">
-                <p>
-                  @if($report->comment == "")
-                  No comment yet.
-                  @else
-                  {{$report->comment}}
-                  @endif
-                </p>
-              </div>
-            </div>
-            <!-- /showback -->
+                <div class="showback">
+                    <form id="commentform">
+                        @csrf
+
+                        <input type="hidden" name="u_id" value="{{$report->user->id}}">
+                        <input type="hidden" name="r_id" value="{{$report->r_id}}">
+                        <div class="alert alert-success" style="background-color: #efefef">
+                            <p>
+
+
+                            <div class="form-group">
+
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" name="comment" id="comment" placeholder="Daily Report Details" rows="5" required></textarea>
+                                    <br>
+                                    <button type="submit" class="btn btn-xs btn-theme">Post Comment</button>
+                                    <div class="validate"></div>
+                                </div>
+                            </div>
+
+                            <p>&nbsp;</p>
+                            </p>
+                        </div>
+                    </form>
+                    <!-- where the response will be displayed -->
+                    <div id='response'></div>
+                    <div id='all_posts'>
+                        <?php
+                        $user_details = array_reverse($user_details);
+                        foreach($user_details as $k=>$v) {
+                            $cid = $v['commentid'];
+                            $rid = $v['rid'];
+
+                            echo "<div align='left' style='border:1px solid;'>
+                        <p style='color:#48BCB4; font-weight:bold;'>".ucfirst($v['type'])."</p>
+                        <p><b><h5 style='color:#48cfad;'>".$v['name']."</h5></b>
+                        <a href='/deletecomment/$cid/$rid' style='color:red;'>Delete</a> </p>
+                        <p style='color:#2e6da4;'><b>".$v['created']."</b></p>
+                        <p>".$v['comment']."</p></div> <p>&nbsp;</p>";
+                        } ?>
+                    </div>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
+                    <script>
+                        $(document).ready(function(){
+                            $('#commentform').submit(function(){
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/post_comments',
+                                    data: $(this).serialize()
+                                })
+                                    .done(function(data){
+
+                                        // show the response
+                                        $('#all_posts').html(data);
+
+                                    })
+                                    .fail(function() {
+
+                                        // just in case posting your form failed
+                                        alert( "Posting failed." );
+
+                                    });
+
+                                // to prevent refreshing the whole page page
+                                return false;
+                            });
+
+
+                        });
+                    </script>
+
+                </div>
+                <!-- /showback -->
           </div>
 
 
@@ -196,7 +245,7 @@ if (window.sidebar){
       var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
 
       sOut += '<tr><td>Manager Comment:</td><td>{{ $report->comment === "" ? "No comment" : $report->comment}}</td></tr>';
-      
+
       sOut += '</table>';
 
       return sOut;

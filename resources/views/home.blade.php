@@ -1,220 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 
-@include('layout.head')
-<link href="asset/lib/advanced-datatable/css/demo_page.css" rel="stylesheet" />
-<link href="asset/lib/advanced-datatable/css/demo_table.css" rel="stylesheet" />
-<link rel="stylesheet" href="asset/lib/advanced-datatable/css/DT_bootstrap.css" />
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="Dashboard">
+  <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+  <title>Dashio - Bootstrap Admin Template</title>
+  <!-- Favicons -->
+  <link href="img/favicon.png" rel="icon">
+  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+  <!-- Bootstrap core CSS -->
+  <link href="{{ asset('asset/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!--external css-->
+  <link href="{{ asset('asset/lib/font-awesome/css/font-awesome.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{{ asset('asset/css/zabuto_calendar.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('asset/lib/gritter/css/jquery.gritter.css') }}" />
+  <!-- Custom styles for this template -->
+  <link href="{{ asset('asset/css/style.css') }}" rel="stylesheet">
+  <link href="{{ asset('asset/css/style-responsive.css') }}" rel="stylesheet">
+  <script src="{{ asset('asset/lib/chart-master/Chart.js') }}"></script>
+</head>
+<style>
+#zabuto_calendar_{{$seldate}} { background: #fff; }
+div#zabuto_calendar_{{$seldate}}_day { color:#000!important; }
+</style>
+
 <body>
+  <?php
+  $i=0; $alldates = array();
+  if(isset($allreports)){
+    foreach ($allreports as $k=>$v){
+      $alldates[$i] = $v->date;
+      $i++;
+    }
+  }
+  $list=array();
+  $month = date('m');
+  $prevmonth1 = date('m', strtotime(date('Y-m')." -1 month"));
+  $prevmonth2 = date('m', strtotime(date('Y-m')." -2 month"));
+  $currdte = date('d');
+  $year = date('Y');
+  for($d=1; $d<=31; $d++)
+  {
+    $time=mktime(12, 0, 0, $month, $d, $year);
+    if (date('m', $time)==$month)
+      if($currdte>=$d){
+        $list[]=date('Y-m-d', $time);
+      }
+    }
+    for($pred=1; $pred<=31; $pred++)
+    {
+      $time=mktime(12, 0, 0, $prevmonth1, $pred, $year);
+      if (date('m', strtotime(date('Y-m')." -1 month"))==$prevmonth1)
+        $prevlist1[]=date('Y-m-d', $time);
+    }
+    for($pred2=1; $pred2<=31; $pred2++)
+    {
+      $time=mktime(12, 0, 0, $prevmonth2, $pred2, $year);
+      if (date('m', strtotime(date('Y-m')." -2 month"))==$prevmonth2)
+        $prevlist2[]=date('Y-m-d', $time);
+    }
+    $list = array_merge($list, $prevlist1, $prevlist2);
+    foreach($alldates as $k=>$v){ ?>
+    <style>
+    div#zabuto_calendar_{{$v}}_day { color:#2a9055; }
+  </style>
+  <?php
+}
+$diff_result = array_diff($list, $alldates);
+$diff_result = array_values($diff_result);
+foreach($diff_result as $k=>$v){
+  $currdate = date('m-d-Y');
+  $v = date('Y-m-d', strtotime($v));
+  if($v < $currdate){ ?>
+  <style>
+  div#zabuto_calendar_{{$val}}_day { color:#ffff; }
+</style>
+<?php } else {
+  $val = date('Y-m-d', strtotime($v)); ?>
+  <style>
+  div#zabuto_calendar_{{$val}}_day { color:#ac2925!important; }
+</style>
+<?php
+}
+} ?>
 
-  <section id="container">
-
-    @include('layout.dashboard')
-    @include('layout.sidenav')
-
-    <section id="main-content">
-      <section class="wrapper site-min-height">
-        <div class="row mt">
-
-          <div class="col-lg-12">
-            <div class="row content-panel">
-              <div class="col-md-4 profile-text mt mb centered">
-                <div class="right-divider hidden-sm hidden-xs">
-                  <h4>10</h4>
-                  <h6>TOTAL TASK</h6>
-                  <h4>5</h4>
-                  <h6>FINISH TASK</h6>
-                  <h4>5</h4>
-                  <h6> PENDING TASK</h6>
+<section id="container">
+  @include('layout.dashboard')
+  @include('layout.sidenav')
+  <section id="main-content">
+    <section class="wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row content-panel">
+            <div class="col-md-2 centered">
+              <div class="profile-pic">
+                <p>
+                  <img src="photo_storage/{{Auth::user()->email}}.png" class="img-circle"></p>
+                  <p>
+                  </p>
                 </div>
               </div>
-              <!-- /col-md-4 -->
               <div class="col-md-4 profile-text">
                 <h3>{{Auth::user()->name}}</h3>
                 <h6>{{Auth::user()->position}}</h6>
                 <p>{{Auth::user()->email}} || {{Auth::user()->mobile}} </p>
-                <br>
-                <p>  
-                  <a class="btn btn-theme" href="/submitreport"><i class="fa fa-upload"></i> Submit Daily Report</a></p>
+              </div>
+              <div class="col-md-4 profile-text" style="margin-top: 35px ">
+                <p>
+                  <a class="btn btn-theme" href="{{ url('submitreport') }}"><i class="fa fa-upload"></i> Submit Daily Report</a></p>
                 </div>
-                <!-- /col-md-4 -->
-                <div class="col-md-4 centered">
-                  <div class="profile-pic">
-                    <p>
-                      <img src="photo_storage/{{Auth::user()->email}}-{{Auth::user()->name}}.jpg" class="img-circle"></p>
-                      <p>
-                      </p>
+              </div>
+            </div>
+
+            <div class="col-lg-8 main-chart">
+              @forelse($reports as $report)
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="message-p pn">
+                    <div class="message-header">
+                      <h5>Report Detail <strong>{{$report->date}}</strong></h5>
                     </div>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <p class="p-bck">
+                          <name>{{$report->description}}</name>
+                        </p>
+                        @if($report->attachment != "")
+                        <p>Attachment: <a href="../report_attachment/{{$report->date}}-{{Auth::user()->id}}.{{$report->file_type}}" target="_blank" type="button" class="btn btn-primary btn-xs">Download</a>
+                          @else
+                          <p>No Attachment</p>
+                          @endif
+                        </p>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <!-- /Message Panel-->
+                </div>
+                <!-- /col-md-8  -->
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb">
+                  <div class="message-p pn">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <!-- /showback -->
+                        <!--  LABELS -->
+                        <div class="showback">
+                          <!-- where the response will be displayed -->
+                          <div id='response'></div>
+                          <div id='all_posts'>
+                            <?php
+                            $user_details = array_reverse($user_details);
+                            if(is_array($user_details) && count($user_details)>0)
+                            {
+                              $user_details = array_reverse($user_details);
+                              foreach($user_details as $k=>$v) {
+                                $cid = $v['commentid']; $rid = $v['rid']; $uid = $v['uid'];
+                                $useremail = $v['email'];
+                                echo "<div class='row'>
+                                <div class='col-md-12 mb'>
+                                <div class='message-p pn'>
+                                <div class='row'>
+                                <div class='col-md-1 centered'>
+                                <div class='profile-pic pic-comment'>
+                                <p style='margin-top: 20px'>
+                                <img  src='/photo_storage/$useremail.png' class='img-circle' height='100px' width='100px'></p>
+                                <p>
+                                </p>
+                                </div>
+                                </div>
+                                <div class='col-md-8'>
+                                <p style='margin-top: 20px; margin-left: 25px;'> <strong> ".ucfirst($v['name'])."</strong></p>
+                                <p class='p-bck' style='margin-left: 25px;'>
+                                ".$v['comment']."
+                                </p>
+                                <p style='margin-left: 25px; color:#c9c9c9'>".$v['created']."</p>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                <div align='left' style=''>
+                                </div>";
+                              }
+                            }
+
+
+                            ?>
+                          </div>
+
+                          <h4><i class="fa fa-angle-right"></i>Comment Section</h4>
+
+                          <form id="commentform">
+                            @csrf
+                            <input type="hidden" name="u_id" value="{{$report->user->id}}">
+                            <input type="hidden" name="r_id" value="{{$report->r_id}}">
+                            <div class="alert alert-success" style="background-color: #efefef">
+                              <p>
+                                <div class="form-group">
+                                  <div class="col-sm-12">
+                                    <textarea class="form-control" name="comment" id="comment" placeholder="Daily Report Details" rows="2" required></textarea>
+                                    <br>
+                                    <button type="submit" name="submit" class="btn btn-xs btn-theme">Post Comment</button>
+                                    <div class="validate"></div>
+                                  </div>
+                                </div>
+
+                                <p>&nbsp;</p>
+                              </p>
+                            </div>
+                          </form>
+                          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js "></script>
+                          <script>
+                            $(document).ready(function(){
+                              $('#commentform').submit(function(){
+
+        // show that something is loading
+        //$('#response').html("<b>Loading response...</b>");
+
+        /*
+         * 'post_receiver.php' - where you will pass the form data
+         * $(this).serialize() - to easily read form data
+         * function(data){... - data contains the response from post_receiver.php
+           */
+           $.ajax({
+            type: 'POST',
+            url: '/post_comments',
+            data: $(this).serialize()
+          })
+           .done(function(data){
+
+                // show the response
+                $('#all_posts').html(data);
+
+              })
+           .fail(function() {
+
+                // just in case posting your form failed
+                alert( "Posting failed." );
+
+              });
+
+        // to prevent refreshing the whole page page
+        return false;
+      });
+
+
+                            });
+                          </script>
+
+                        </div>
+                        <!-- /showback -->
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- /Message Panel-->
+                </div>
+                <!-- /col-md-8  -->
+              </div>
+
+              @empty
+              No Reports
+              @endforelse
+
+            </div>
+            <!-- /col-lg-9 END SECTION MIDDLE -->
+        <!-- **********************************************************************************************************************************************************
+            RIGHT SIDEBAR CONTENT
+            *********************************************************************************************************************************************************** -->
+            <div class="col-lg-4">
+              <!-- CALENDAR-->
+              <div id="calendar" class="mb" style="margin-top: 20px;">
+                <div class="panel green-panel no-margin">
+                  <div class="panel-body">
+                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
+                      <div class="arrow"></div>
+                      <h3 class="popover-title" style="disadding: none;"></h3>
+                      <div id="date-popover-content" class="popover-content"></div>
+                    </div>
+                    <div id="my-calendar"></div>
                   </div>
                 </div>
               </div>
-
+              <!-- / calendar -->
             </div>
-            <div class="col-lg-2">
-            </div>
-            <div class="col-lg-8">
-
-              <h3><i class="fa fa-angle-right"></i> Daily Report</h3>
-              <div class="adv-table">
-                <table cellpadding="0" cellspacing="0" border="0" class="display table" id="hidden-table-info">
-                  <thead>
-                    <tr>
-                      <th>Report Date</th>
-
-                      <th class="">Action</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-
-
-                    
-                    @forelse($reports as $report)
-                    <tr class="gradeA">
-                      <td>{{$report->date}}</td>
-
-                      <td>
-                        <a href="/reportdetails/{{$report->r_id}}" type="button" class="btn btn-theme btn-xs">view report</a> 
-                      </td>
-                    </tr>
-
-                    @empty
-                    @endforelse
-                   
-
-
-
-                  </tbody>
-
-                </table>
-              </div>
-            </div>
-
-            <div class="col-lg-2">
-            </div>
-          </section>
-
-        </section>
-
-        <footer class="site-footer">
-          <div class="text-center">
-            <p>
-              &copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
-            </p>
-
-            <a href="profile.html#" class="go-top">
-              <i class="fa fa-angle-up"></i>
-            </a>
+            <!-- /col-lg-3 -->
           </div>
-        </footer>
-        <!--footer end-->
+          <!-- /row -->
+        </section>
       </section>
-      <!-- js placed at the end of the document so the pages load faster -->
-      <script src="lib/jquery/jquery.min.js"></script>
-      <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-      <script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
-      <script src="lib/jquery.scrollTo.min.js"></script>
-      <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+        <div class="text-center">
+          <p>
+            &copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+          </p>
 
-      <script type="text/javascript" language="javascript" src="asset/lib/advanced-datatable/js/jquery.js"></script>
+          <a href="profile.html#" class="go-top">
+            <i class="fa fa-angle-up"></i>
+          </a>
+        </div>
+      </footer>
+      <!--footer end-->
+    </section>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{{ asset('asset/lib/jquery/jquery.min.js') }}"></script>
 
-
-      <script type="text/javascript" language="javascript" src="asset/lib/advanced-datatable/js/jquery.dataTables.js"></script>
-      <script type="text/javascript" src="asset/lib/advanced-datatable/js/DT_bootstrap.js"></script>
-      <!--common script for all pages-->
-
-
-
-      <!--common script for all pages-->
-      <script src="lib/common-scripts.js"></script>
-      <!--script for this page-->
-      <!-- MAP SCRIPT - ALL CONFIGURATION IS PLACED HERE - VIEW OUR DOCUMENTATION FOR FURTHER INFORMATION -->
-      <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false"></script>
-      <script>
-        $('.contact-map').click(function() {
-
-      //google map in tab click initialize
-      function initialize() {
-        var myLatlng = new google.maps.LatLng(40.6700, -73.9400);
-        var mapOptions = {
-          zoom: 11,
-          scrollwheel: false,
-          center: myLatlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Dashio Admin Theme!'
+    <script src="{{ asset('asset/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script class="include" type="text/javascript" src="{{ asset('asset/lib/jquery.dcjqaccordion.2.7.js') }}"></script>
+    <script src="{{ asset('asset/lib/jquery.scrollTo.min.js') }}"></script>
+    <script src="{{ asset('asset/lib/jquery.nicescroll.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('asset/lib/jquery.sparkline.js') }}"></script>
+    <!--common script for all pages-->
+    <script src="{{ asset('asset/lib/common-scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('asset/lib/gritter/js/jquery.gritter.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('asset/lib/gritter-conf.js') }}"></script>
+    <!--script for this page-->
+    <script src="{{ asset('asset/lib/sparkline-chart.js') }}"></script>
+    <script src="{{ asset('asset/lib/zabuto_calendar.js') }}"></script>
+    <script type="application/javascript">
+      $(document).ready(function() {
+        $("#date-popover").popover({
+          html: true,
+          trigger: "manual"
         });
+        $("#date-popover").hide();
+        $("#date-popover").click(function(e) {
+          $(this).hide();
+        });
+
+        $("#my-calendar").zabuto_calendar({
+          action: function() {
+            return myDateFunction(this.id, true);
+          },
+          action_nav: function() {
+            return myNavFunction(this.id);
+          },
+          ajax: {
+            url: "show_data.php?action=1",
+            modal: true
+          },
+          legend: [{
+            type: "text",
+            label: "Special event",
+            badge: "00"
+          },
+          {
+            type: "block",
+            label: "Regular event",
+          }
+          ]
+        });
+      });
+
+      function myNavFunction(id) {
+        $("#date-popover").hide();
+        var nav = $("#" + id).data("navigation");
+        var to = $("#" + id).data("to");
+        console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
       }
-      google.maps.event.addDomListener(window, 'click', initialize);
-    });
-  </script>
 
-  <script type="text/javascript">
-    /* Formating function for row details */
-    function fnFormatDetails(oTable, nTr) {
-      var aData = oTable.fnGetData(nTr);
-      var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+      function myDateFunction(date) {
+        myString = date.substring(date.length - 10);
+        window.location.href = '/home?d='+myString;
+        console.log('Triggered',myString)
+      }
+    </script>
+  </body>
 
-      
-      sOut += '</table>';
-
-      return sOut;
-    }
-
-    $(document).ready(function() {
-      /*
-       * Insert a 'details' column to the table
-       */
-       var nCloneTh = document.createElement('th');
-       var nCloneTd = document.createElement('td');
-       nCloneTd.innerHTML = '<img src="asset/lib/advanced-datatable/images/details_open.png">';
-       nCloneTd.className = "center";
-
-       $('#hidden-table-info thead tr').each(function() {
-        this.insertBefore(nCloneTh, this.childNodes[0]);
-      });
-
-       $('#hidden-table-info tbody tr').each(function() {
-        this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
-      });
-
-      /*
-       * Initialse DataTables, with no sorting on the 'details' column
-       */
-       var oTable = $('#hidden-table-info').dataTable({
-        "aoColumnDefs": [{
-          "bSortable": false,
-          "aTargets": [0]
-        }],
-        "aaSorting": [
-        [1, 'asc']
-        ]
-      });
-
-      /* Add event listener for opening and closing details
-       * Note that the indicator for showing which row is open is not controlled by DataTables,
-       * rather it is done here
-       */
-       $('#hidden-table-info tbody td img').live('click', function() {
-        var nTr = $(this).parents('tr')[0];
-        if (oTable.fnIsOpen(nTr)) {
-          /* This row is already open - close it */
-          this.src = "asset/lib/advanced-datatable/media/images/details_open.png";
-          oTable.fnClose(nTr);
-        } else {
-          /* Open this row */
-          this.src = "asset/lib/advanced-datatable/images/details_close.png";
-          oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
-        }
-      });
-     });
-   </script>
-
-
- </body>
-
- </html>
+  </html>

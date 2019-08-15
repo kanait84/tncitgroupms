@@ -2,7 +2,7 @@
   <div class="sidebar-toggle-box">
     <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
   </div>
-  <a href="/" class="logo"><b>ABBC-<span>RS</span></b></a>
+  <a href="/" class="logo"><b>TNCITGROUP-<span>MS</span></b></a>
   
   <div class="top-menu">
     <ul class="nav pull-right top-menu">

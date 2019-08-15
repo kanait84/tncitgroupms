@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'mobile', 'department', 'subdepartment', 'position', 'emp_photo', 'type',
+        'name', 'email', 'password', 'mobile', 'd_id', 'sd_id', 'position', 'emp_photo', 'file_type', 'type',
     ];
 
 
@@ -71,7 +71,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Report', 'u_id', 'id');
     }
 
-
     public function report()
     {
         return $this->belongsTo('App\Report', 'u_id', 'id');
@@ -86,6 +85,21 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Comment', 'u_id', 'id');
     }
+
+    public function department()
+    {
+        return $this->belongsTo('App\Department', 'd_id', 'd_id');
+    }
+
+    public function subdepartment()
+    {
+        return $this->belongsTo('App\Subdepartment', 'sd_id', 'sd_id');
+    }
+
+      public function manager_departments()
+    {
+        return $this->hasMany('App\Department', 'd_id', 'd_id');
+    } 
 
 
 }

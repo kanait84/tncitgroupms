@@ -7,75 +7,75 @@
         @if(Auth::user()->type === 'topmanagement')
 
         <li class="mt">
-          <a href="/topmanagement">
+          <a href="{{ url('topmanagement') }}">
+            <i class="fa fa-dashboard"></i>
+            <span>Departments</span>
+          </a>
+        </li>
+
+        @elseif(Auth::user()->type === 'employee')
+
+        <li class="mt">
+          <a href="{{ url('home') }}">
+            <i class="fa fa-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        @elseif(Auth::user()->type === 'management')
+
+        <li class="mt">
+          <a href="{{ url('management') }}">
             <i class="fa fa-dashboard"></i>
             <span>Dashboard</span>
           </a>
         </li>
 
         <li class="sub-menu">
-          <a href="/itdepartment">
-            <i class="fa fa-code"></i>
-            <span>IT Department</span>
-          </a>
-        </li>
-
-        <li class="sub-menu">
-          <a href="/marketing">
-            <i class="fa fa-bullhorn"></i>
-            <span>Marketing</span>
-          </a>
-        </li>
-
-        <li class="sub-menu">
-          <a href="#">
-            <i class="fa fa-archive"></i>
-            <span>Administrative</span>
-          </a>
-        </li>
-
-        <li class="sub-menu">
-          <a href="#">
-            <i class="fa fa-bar-chart-o"></i>
-            <span>Accounting</span>
-          </a>
-        </li>
-
-        <li class="sub-menu">
-         <a href="/management">
-          <i class="fa fa-bookmark"></i>
-          <span>Management</span>
-        </a>
-      </li>
-
-      @elseif(Auth::user()->type === 'employee')
-
-      <li class="mt">
-        <a href="/home">
-          <i class="fa fa-dashboard"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-
-
-      @elseif(Auth::user()->type === 'management')
-
-      <li class="mt">
-        <a href="/management">
-          <i class="fa fa-dashboard"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-
-
-     <li class="sub-menu">
-         <a href="/home">
+         <a href="{{ url('home') }}">
           <i class="fa fa-bookmark"></i>
           <span>My Report</span>
         </a>
       </li>
 
-      @endif
-    </ul>
-  </div>
+      @elseif(Auth::user()->type === 'admin')
+
+      <li class="mt">
+        <a href="{{ url('admin') }}">
+          <i class="fa fa-users"></i>
+          <span>Employee</span>
+        </a>
+      </li>
+
+      <li class="sub-menu">
+       <a href="{{ url('/register') }}">
+        <i class="fa fa-plus-square-o"></i>
+        <span>Add Employee</span>
+      </a>
+    </li>
+
+    <li class="sub-menu">
+     <a href="{{ url('/department') }}">
+      <i class="fa fa-building-o"></i>
+      <span>Departments</span>
+    </a>
+  </li>
+
+  <li class="sub-menu">
+   <a href="{{ url('/subdepartment') }}">
+    <i class="fa fa-building-o"></i>
+    <span>Sub-Departments</span>
+  </a>
+</li>
+
+
+@endif
+<li class="sub-menu">
+ <a href="{{ url('password/reset') }}">
+  <i class="fa fa-gears"></i>
+  <span>Change Password</span>
+</a>
+</li>
+</ul>
+</div>
 </aside>

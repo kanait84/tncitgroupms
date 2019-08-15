@@ -17,11 +17,11 @@ class CreateReportsTable extends Migration
             $table->bigIncrements('r_id');
             $table->unsignedBigInteger('u_id');
             $table->foreign('u_id')->references('id')->on('users');
-            $table->string('project', 100);
+            $table->string('date', 250);
             $table->string('description', 250);
-            $table->string('status', 100);
-            $table->string('comment', 100);
-            $table->string('attachment',100);
+            $table->string('attachment',100)->nullable();
+            $table->string('file_type',50)->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

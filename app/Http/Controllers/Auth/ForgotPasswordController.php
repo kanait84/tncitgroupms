@@ -25,8 +25,11 @@ class ForgotPasswordController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+
+    //password auth removed
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 }

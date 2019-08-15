@@ -11,10 +11,11 @@
 	jQuery(document).ready(function( $ ) {
 		var today = new Date();
 		$('.newdate-picker').datepicker({
-			format: 'mm-dd-yyyy',
+			dateFormat: 'yy-mm-dd',
 			autoclose:true,
 			endDate: "today",
-			maxDate: today
+			maxDate: 0,
+			minDate: -3
 		}).on('changeDate', function (ev) {
 			$(this).datepicker('hide');
 		});
@@ -48,7 +49,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-2">Date</label>
 									<div class="col-md-3 col-xs-11">
-										<input class="form-control form-control-inline input-medium newdate-picker " size="16" type="text" value="" name="date" id="date" required="">
+										<input class="form-control form-control-inline input-medium newdate-picker " size="16" type="text" name="date" id="date" required="" >
 										<span class="help-block">Select date</span>
 									</div>
 								</div>

@@ -36,7 +36,7 @@
 
 								</div>
 								<!-- /col-md-4 -->
-								<div class="col-md-4 centered">
+								<div class="col-md-4 centesred">
 									<div class="profile-pic">
 										<p>
 											<img src="photo_storage/{{Auth::user()->email}}-{{Auth::user()->name}}.jpg" class="img-circle"></p>
@@ -77,20 +77,13 @@
 												$sub_department = 'Operation';
 											}
 											?>
-
-											{{--<img src="photo_storage/{{$staff->email}}-{{$staff->name}}.jpg" class="img-circle" width="80">--}}
+											 
 											<h4>{{$sub_department}} Team</h4>
-
-
 										</div>
-									</div>
-									{{--<div class="pr2-social centered">
-										
-										<a href="/viewemployee/{{$staff->id}}" class="btn btn-sm btn-clear-g" style="margin-top: 10px; color: #3d3d3d;">View Team</a>
-									</div>--}}
+									</div>									 
 
 									<div class="pr2-social centered">
-										<a href="/management/subdept/{{$staff->sub_department}}" class="btn btn-sm btn-clear-g" style="margin-top: 10px; color: #3d3d3d;">View Team</a>
+										<a href="{{ url('management/subdept')."/".$staff->sub_department}}" class="btn btn-sm btn-clear-g" style="margin-top: 10px; color: #3d3d3d;">View Team</a>
 									</div>
 
 								</div>
