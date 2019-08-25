@@ -1,5 +1,9 @@
 @extends('layouts.app')
-
+<style>
+    .dropdown-menu.dropdown-menu-right.show, a.dropdown-item {
+        background: #2F323A!important;
+    }
+</style>
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

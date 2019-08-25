@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="Dashboard">
   <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-  <title>Dashio - Bootstrap Admin Template</title>
+  <title>TNC IT GROUP MANAGEMENT SYSTEM</title>
   <!-- Favicons -->
   <link href="img/favicon.png" rel="icon">
   <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -25,6 +25,7 @@
 <style>
 #zabuto_calendar_{{$seldate}} { background: #fff; }
 div#zabuto_calendar_{{$seldate}}_day { color:#000!important; }
+.right-button { float: right; vertical-align: top; margin-right: 9px; margin-top: -6px; }
 </style>
 
 <body>
@@ -98,7 +99,7 @@ foreach($diff_result as $k=>$v){
             <div class="col-md-2 centered">
               <div class="profile-pic">
                 <p>
-                  <img src="photo_storage/{{Auth::user()->email}}.png" class="img-circle"></p>
+                  <img src="photo_storage/{{Auth::user()->emp_photo}}" class="img-circle"></p>
                   <p>
                   </p>
                 </div>
@@ -121,25 +122,56 @@ foreach($diff_result as $k=>$v){
                 <div class="col-md-12">
                   <div class="message-p pn">
                     <div class="message-header">
-                      <h5>Report Detail <strong>{{$report->date}}</strong></h5>
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @endif
+
+                        @if ($message = Session::get('warning'))
+                            <div class="alert alert-warning alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @endif
+
+                        @if ($message = Session::get('error'))
+                            <div class="alert alert-danger alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @endif
+                        <h5>Report Detail <strong>{{$report->date}}</strong>
+                          @if($report->edit_request==0)
+                              <span class="right-button">
+                                  <a href="editrequest/{{$report->u_id."/".$report->r_id."/".$report->date}}"
+                                       class="btn btn-primary btn-xs">Edit Request</a></span>
+                          @else
+                              <span class="right-button">
+                                  <a href="report/{{$report->r_id}}"
+                                       class="btn btn-primary btn-xs">Edit</a></span>
+                          @endif
+                      </h5>
                     </div>
+
                     <div class="row">
                       <div class="col-md-9">
-                        <p class="p-bck">
-                          <name>{{$report->description}}</name>
+                        <p class="p-bck" style="white-space: pre-line">
+                            <name>{{$report->description}}</name>
                         </p>
-                        @if($report->attachment != "")
-                        <p>Attachment: <a href="../report_attachment/{{$report->date}}-{{Auth::user()->id}}.{{$report->file_type}}" target="_blank" type="button" class="btn btn-primary btn-xs">Download</a>
+                          @if($report->attachment != "")
+                              <p>Attachment:
+                                  <a href="../report_attachment/{{$report->date}}-{{Auth::user()->id}}.{{$report->file_type}}"
+                                     target="_blank" type="button" class="btn btn-primary btn-xs">Download</a>
+                              </p>
                           @else
                           <p>No Attachment</p>
                           @endif
-                        </p>
                       </div>
                     </div>
 
                   </div>
-
-
                   <!-- /Message Panel-->
                 </div>
                 <!-- /col-md-8  -->
@@ -163,6 +195,7 @@ foreach($diff_result as $k=>$v){
                               foreach($user_details as $k=>$v) {
                                 $cid = $v['commentid']; $rid = $v['rid']; $uid = $v['uid'];
                                 $useremail = $v['email'];
+                                $emp_photo = $v['emp_photo'];
                                 echo "<div class='row'>
                                 <div class='col-md-12 mb'>
                                 <div class='message-p pn'>
@@ -170,7 +203,7 @@ foreach($diff_result as $k=>$v){
                                 <div class='col-md-1 centered'>
                                 <div class='profile-pic pic-comment'>
                                 <p style='margin-top: 20px'>
-                                <img  src='/photo_storage/$useremail.png' class='img-circle' height='100px' width='100px'></p>
+                                <img  src='/photo_storage/$emp_photo' class='img-circle' height='100px' width='100px'></p>
                                 <p>
                                 </p>
                                 </div>
@@ -302,7 +335,7 @@ foreach($diff_result as $k=>$v){
       <footer class="site-footer">
         <div class="text-center">
           <p>
-            &copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+            &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
           </p>
 
           <a href="profile.html#" class="go-top">

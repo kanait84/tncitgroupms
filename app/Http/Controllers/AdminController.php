@@ -16,9 +16,7 @@ class AdminController extends Controller
 	}
 	public function admin()
 	{
-
-		$employee = User::all();
-
+		$employee = User::with('department','subdepartment')->get();
 		return view('admin.admin', compact('employee'));
 	}
 
@@ -49,29 +47,29 @@ class AdminController extends Controller
 		$department = new Department;
 		$department->d_description = $request->d_description;
 		$department->d_title = $request->d_title;
-	
+
 
 		$department->save();
-		return redirect('/department'); 
+		return redirect('/department');
 	}
 
 
+    public function deleteuser($uid)
+    {
+        Report::where('u_id', $uid)->delete();
+        User::find($uid)->delete();
+        return redirect('/admin' );
+    }
 
-
-
-//subdepartment
-		public function subDepartment(){
-
-		$subdepartments = Subdepartment::all();
-
-		return view('admin.subdepartment',compact('subdepartments'));
+    //subdepartment
+    public function subDepartment(){
+        $subdepartments = Subdepartment::all();
+        return view('admin.subdepartment',compact('subdepartments'));
 	}
 
-		public function addSubDepartment(){
-
+	public function addSubDepartment(){
 		$managers = User::where('type', 'management')->get();
 		$departments = Department::all();
-
 		return view('admin.addsubdepartment',compact('managers', 'departments'));
 	}
 
@@ -93,7 +91,7 @@ class AdminController extends Controller
 
 		$subdepartment->save();
 
-		return redirect('/subdepartment'); 
+		return redirect('/subdepartment');
 	}
 
 }

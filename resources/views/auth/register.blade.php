@@ -1,5 +1,9 @@
 @extends('layouts.app')
-
+<style>
+    .dropdown-menu.dropdown-menu-right.show, a.dropdown-item {
+        background: #2F323A!important;
+    }
+</style>
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -22,6 +26,7 @@
                                     <option value="admin">Administrator</option>
                                     <option value="topmanagement">Top Management</option>
                                     <option value="management">Management</option>
+                                    <option value="submanagement">Sub Management</option>
                                     <option value="employee">Employee</option>
                                 </select>
 
@@ -171,7 +176,7 @@
                             <label for="emp_photo" class="col-md-4 col-form-label text-md-right">{{ __('Photo') }}</label>
 
                             <div class="col-md-6">
-                                <input id="emp_photo" type="file" class="form-control @error('emp_photo') is-invalid @enderror" name="emp_photo" required autocomplete="emp_photo">
+                                <input id="emp_photo" type="file" class="form-control @error('emp_photo') is-invalid @enderror" name="emp_photo" autocomplete="emp_photo">
 
                                 @error('emp_photo')
                                 <span class="invalid-feedback" role="alert">

@@ -14,7 +14,7 @@
 
 		<section id="main-content">
 			<section class="wrapper site-min-height">
-				
+
 
 				<div class="col-lg-12">
 
@@ -24,41 +24,33 @@
 						<table cellpadding="0" cellspacing="0" border="0" class="display table" id="hidden-table-info">
 							<thead>
 								<tr>
-									<th>Name</th>
+									<th width="10%">Name</th>
 									<th>Department</th>
+									<th>SubDepartment</th>
 									<th>Position</th>
 									<th>Email</th>
 									<th>Mobile</th>
+									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
-
 								@forelse($employee as $emp)
 								<tr class="gradeA">
 									<td>{{$emp->name}}</td>
-									<td>
-										@if($emp->sub_department == 'marketing_content') Content Marketing
-										@elseif($emp->sub_department == 'marketing_seo') SEO Marketing
-										@elseif($emp->sub_department == 'marketing_support') Customer Support
-										@elseif($emp->sub_department == 'it_app') App Development 
-										@elseif($emp->sub_department == 'it_security') Cyber Security
-										@elseif($emp->sub_department == 'it_blockchain') Blockchain Team
-										@elseif($emp->sub_department == 'management_operation') Management
-
-										@endif
-
-										<td>{{$emp->position}}</td>
-										<td>{{$emp->email}}</td>
-										<td>{{$emp->mobile}}</td>
-									</tr>
-									@empty
-									@endforelse
+									<td> {{$emp->department->d_title}} </td>
+                                    <td> {{$emp->subdepartment->sd_title}} </td>
+                                    <td>{{$emp->position}}</td>
+                                    <td>{{$emp->email}}</td>
+                                    <td>{{$emp->mobile}}</td>
+                                    <td align="center">
+                                        <a href="deleteuser/{{$emp->id}}"><i class="fa fa-trash" aria-hidden="true"></i></a> </td>
+                                </tr>
+                                @empty
+                                @endforelse
 								</tbody>
 							</table>
 						</div>
 					</div>
-
-
 				</section>
 
 			</section>
@@ -66,7 +58,7 @@
 			<footer class="site-footer">
 				<div class="text-center">
 					<p>
-						&copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+						&copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
 					</p>
 
 					<a href="profile.html#" class="go-top">

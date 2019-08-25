@@ -32,7 +32,7 @@
               <li>
                 <a href="index.html#">
                   <div class="task-info">
-                    <div class="desc">Dashio Admin Panel</div>
+                    <div class="desc">TNC IT Group Admin Panel</div>
                     <div class="percent">40%</div>
                   </div>
                   <div class="progress progress-striped">

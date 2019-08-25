@@ -33,11 +33,11 @@ class LoginController extends Controller
 
         if(Auth::user()->type=='employee'){
             return '/home';
-        }   
+        }
 
         elseif(Auth::user()->type=='admin'){
             return '/admin';
-        }   
+        }
 
 
         if(Auth::user()->type=='topmanagement'){
@@ -46,7 +46,11 @@ class LoginController extends Controller
 
         elseif(Auth::user()->type=='management'){
             return '/management';
-        }   
+        }
+
+        elseif(Auth::user()->type=='submanagement'){
+            return '/submanagement';
+        }
 
     }
 

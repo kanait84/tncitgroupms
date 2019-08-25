@@ -13,6 +13,7 @@ class User extends Authenticatable
     const ADMIN_TYPE = 'admin';
     const TOP_MANAGEMENT_TYPE = 'topmanagement';
     const MANAGEMENT_TYPE = 'management';
+    const SUBMANAGEMENT_TYPE = 'submanagement';
     const DEFAULT_TYPE = 'employee';
 
     /**
@@ -25,16 +26,20 @@ class User extends Authenticatable
     ];
 
 
-    public function isAdmin()    {        
-        return $this->type === self::ADMIN_TYPE;    
+    public function isAdmin()    {
+        return $this->type === self::ADMIN_TYPE;
     }
 
-    public function isManagement()    {        
-        return $this->type === self::MANAGEMENT_TYPE;    
+    public function isManagement()    {
+        return $this->type === self::MANAGEMENT_TYPE;
     }
 
-    public function isTopManagement()    {        
-        return $this->type === self::TOP_MANAGEMENT_TYPE;    
+    public function isSubmanagement()    {
+        return $this->type === self::SUBMANAGEMENT_TYPE;
+    }
+
+    public function isTopManagement()    {
+        return $this->type === self::TOP_MANAGEMENT_TYPE;
     }
 
     /**
@@ -99,7 +104,7 @@ class User extends Authenticatable
       public function manager_departments()
     {
         return $this->hasMany('App\Department', 'd_id', 'd_id');
-    } 
+    }
 
 
 }

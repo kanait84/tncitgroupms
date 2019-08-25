@@ -19,14 +19,14 @@
 						<i class="fa fa-plus"></i>
 					</a>
 				</h3>
-					
+
 					<div class="adv-table">
 
 						<table cellpadding="0" cellspacing="0" border="0" class="display table" id="hidden-table-info">
 							<thead>
 								<tr>
 									<th>Name</th>
-									
+
 									<th>Description</th>
 									<th>Department</th>
 
@@ -54,7 +54,7 @@
 		<footer class="site-footer">
 			<div class="text-center">
 				<p>
-					&copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+					&copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
 				</p>
 
 				<a href="profile.html#" class="go-top">

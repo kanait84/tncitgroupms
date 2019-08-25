@@ -32,7 +32,7 @@
 								<h6>{{Auth::user()->position}}</h6>
 								<p>{{Auth::user()->email}} || {{Auth::user()->mobile}} </p>
 								<br>
-								<p>  
+								<p>
 
 								</div>
 								<!-- /col-md-4 -->
@@ -53,7 +53,7 @@
 
 
 
-							
+
 							@foreach($staffs as $staff)
 							<div class="col-lg-4 col-md-4 col-sm-4 mb">
 								<div class="content-panel pn">
@@ -77,17 +77,17 @@
 												$sub_department = 'Operation';
 											}
 											?>
-											 
+
 											<h4>{{$sub_department}} Team</h4>
 										</div>
-									</div>									 
+									</div>
 
 									<div class="pr2-social centered">
 										<a href="{{ url('management/subdept')."/".$staff->sub_department}}" class="btn btn-sm btn-clear-g" style="margin-top: 10px; color: #3d3d3d;">View Team</a>
 									</div>
 
 								</div>
-								
+
 							</div>
 							@endforeach
 
@@ -102,7 +102,7 @@
 				<footer class="site-footer">
 					<div class="text-center">
 						<p>
-							&copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+							&copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
 						</p>
 
 						<a href="profile.html#" class="go-top">

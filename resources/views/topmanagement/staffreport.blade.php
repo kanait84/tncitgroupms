@@ -1,32 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="Dashboard">
-  <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-  <title>Dashio - Bootstrap Admin Template</title>
-  <!-- Favicons -->
-  <link href="img/favicon.png" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
-  <!-- Bootstrap core CSS -->
-  <link href="{{ asset('asset/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <!--external css-->
-  <link href="{{ asset('asset/lib/font-awesome/css/font-awesome.css') }}" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="{{ asset('asset/css/zabuto_calendar.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('asset/lib/gritter/css/jquery.gritter.css') }}" />
-  <!-- Custom styles for this template -->
-  <link href="{{ asset('asset/css/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('asset/css/style-responsive.css') }}" rel="stylesheet">
-  <script src="{{ asset('asset/lib/chart-master/Chart.js') }}"></script>
+@include('layout.head')
+<link href="asset/lib/advanced-datatable/css/demo_page.css" rel="stylesheet" />
+<link href="asset/lib/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+<link rel="stylesheet" href="asset/lib/advanced-datatable/css/DT_bootstrap.css" />
 <style>
     #zabuto_calendar_{{$seldate}} { background: #fff; }
     div#zabuto_calendar_{{$seldate}}_day { color:#000!important; }
 </style>
-</head>
-
 <body>
 <?php
 $i=0; $alldates = array();
@@ -127,7 +108,7 @@ $val = date('Y-m-d', strtotime($v)); ?>
                       </div>
                       <div class="row">
                         <div class="col-md-9">
-                          <p class="p-bck">
+                          <p class="p-bck" style="white-space: pre-line">
                             <name>{{$report->description}}</name>
                           </p>
                           @if($report->attachment != "")
@@ -167,6 +148,7 @@ $val = date('Y-m-d', strtotime($v)); ?>
               foreach($user_details as $k=>$v) {
                   $cid = $v['commentid']; $rid = $v['rid']; $uid = $v['uid'];
                   $useremail = $v['email'];
+                  $emp_photo = $v['emp_photo'];
                   echo "<div class='row'>
                         <div class='col-md-12 mb'>
                         <div class='message-p pn'>
@@ -174,7 +156,7 @@ $val = date('Y-m-d', strtotime($v)); ?>
                         <div class='col-md-1 centered'>
                         <div class='profile-pic pic-comment'>
                         <p style='margin-top: 20px'>
-                        <img  src='/photo_storage/$useremail.png' class='img-circle' height='100px' width='100px'></p>
+                        <img  src='/photo_storage/$emp_photo' class='img-circle' height='100px' width='100px'></p>
                         <p>
                         </p>
                         </div>
@@ -246,7 +228,7 @@ $val = date('Y-m-d', strtotime($v)); ?>
       <footer class="site-footer">
         <div class="text-center">
           <p>
-            &copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+            &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
           </p>
 
           <a href="profile.html#" class="go-top">

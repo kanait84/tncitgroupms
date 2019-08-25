@@ -194,7 +194,7 @@ if (window.sidebar){
       <footer class="site-footer">
         <div class="text-center">
           <p>
-            &copy; Copyrights <strong>ABBC </strong>. All Rights Reserved
+            &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
           </p>
 
           <a href="profile.html#" class="go-top">

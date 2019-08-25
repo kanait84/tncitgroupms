@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Subdepartment;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
 use App\Comment;
 use App\Department;
-use Auth;
-
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TopManagementController extends Controller
 {
@@ -19,28 +20,41 @@ class TopManagementController extends Controller
 		$this->middleware('auth');
 	}
 
-
 	public function topmanagement()
 	{
-
 		$departments = Department::all();
-
-		return view('topmanagement.topmanagement', compact('departments'));
+        $usercount = User::all()->count();
+        $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
+            ->whereRaw('Date(created_at) = CURDATE()')->count();
+        $reports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $seldate = date('Y-m-d');
+        $subdepartments = Subdepartment::where('sd_id', '=',3)->get();
+        $managers = isset($subdepartments[0]) ? $subdepartments[0] : '';
+		return view('topmanagement.topmanagement', compact('departments', 'managers', 'reports', 'usercount', 'todayreportcnt', 'seldate'));
 	}
-
 
 	public function viewDepartment(Request $request, $d_id){
 
 		$department = Department::where('d_id', $d_id)->with('subdepartment')->first();
+        $usercount = User::all()->count();
+        $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
+            ->whereRaw('Date(created_at) = CURDATE()')->count();
+        $reports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $seldate = date('Y-m-d');
 
-		return view('topmanagement.departmentlist', compact('department'));
+		return view('topmanagement.departmentlist', compact('department', 'reports', 'usercount', 'todayreportcnt', 'seldate'));
 	}
 
 
 	public function viewSubdepartment(Request $request, $sd_id)
 	{
-		$users = User::where('sd_id', $sd_id)->with('subdepartment')->get();
-		return view('topmanagement.stafflist', compact('users'));
+		$users = User::where('sd_id', $sd_id)->with('subdepartment')->where('id', '!=',Auth::user()->id)->where('id', '!=',1)->get();
+        $usercount = User::all()->count();
+        $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
+            ->whereRaw('Date(created_at) = CURDATE()')->count();
+        $reports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $seldate = date('Y-m-d');
+		return view('topmanagement.stafflist', compact('users', 'reports', 'usercount', 'todayreportcnt', 'seldate'));
 	}
 
 	public function viewEmployee(Request $request, $id)
@@ -60,6 +74,7 @@ class TopManagementController extends Controller
             $user_details[$i]['name'] = $cuser->name;
             $user_details[$i]['type'] = $cuser->type;
             $user_details[$i]['email'] = $cuser->email;
+            $user_details[$i]['emp_photo'] = $cuser->emp_photo;
             $user_details[$i]['comment'] = $v->comment;
             $user_details[$i]['commentid'] = $v->id;
             $user_details[$i]['rid'] = $v->r_id;
@@ -74,8 +89,6 @@ class TopManagementController extends Controller
             'currcomments', 'seldate', 'allreports'));
 	}
 
-
-
 	public function topReportDetails(Request $request, $r_id)
 	{
         $user = Auth::user();
@@ -89,6 +102,7 @@ class TopManagementController extends Controller
             $user_details[$i]['name'] = $cuser->name;
             $user_details[$i]['type'] = $cuser->type;
             $user_details[$i]['email'] = $cuser->email;
+            $user_details[$i]['emp_photo'] = $cuser->emp_photo;
             $user_details[$i]['comment'] = $v->comment;
             $user_details[$i]['commentid'] = $v->id;
             $user_details[$i]['rid'] = $v->r_id;
@@ -98,5 +112,20 @@ class TopManagementController extends Controller
         }
         return view('topmanagement.staffreportdetails', compact('report', 'user_details', 'uid'));
 	}
+
+    public function missedReport(Request $request)
+    {
+        $users = User::find(Auth::user()->id);
+        $reports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $departments = Department::all();
+        $usercount = User::all()->count();
+        $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
+            ->whereRaw('Date(created_at) = CURDATE()')->count();
+        $seldate = date('Y-m-d');
+        return view('topmanagement.missedreport', compact('reports', 'users', 'departments',
+            'usercount', 'todayreportcnt', 'seldate' ));
+    }
+
+
 
 }
