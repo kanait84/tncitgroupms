@@ -15,21 +15,12 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
-Route::get('/welcomeold', function () {
-    return view('welcomeold');
-});
-
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('/submitreport', 'HomeController@submitReport')->name('submitreport');
-
 Route::get('/postReport', 'HomeController@postReport');
 Route::post('/postReport', 'HomeController@postReport');
-
 Route::get('reportdetails/{r_id}', 'HomeController@reportDetails')->name('reportdetails');
-
 Route::get('settings', 'HomeController@settings')->name('settings');
 
 //administrator
@@ -49,7 +40,6 @@ Route::post('/postdepartment', 'AdminController@postDepartment')
 ->middleware('admin')
 ->name('postdepartment');
 
-
 Route::get('/subdepartment', 'AdminController@subDepartment')
 ->middleware('admin')
 ->name('subdepartment');
@@ -67,7 +57,6 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 Route::post('register', 'Auth\RegisterController@register')->middleware('admin')  ;
 
 Route::get('/deletecomment/{c_id}/{r_id}', 'ManagementController@deletecomment')->name('deletecomment');
-
 Route::get('/deleteuser/{uid}','AdminController@deleteuser')->name('deleteuser');
 
 // management
@@ -112,10 +101,7 @@ Route::get('viewemployee/{id}', 'TopManagementController@viewEmployee')
 ->middleware('is_topmanagement')
 ->name('viewemployee');
 
-Route::get('missedreport', 'TopManagementController@missedReport')
-    ->middleware('is_topmanagement')
-    ->name('missedreport');
-
+Route::get('missedreport', 'TopManagementController@missedReport')->name('missedreport');
 Route::get('/empreportdetails/{r_id}', 'TopManagementController@topReportDetails')->name('empreportdetails');
 
 Route::get('/post_comments', 'ManagementController@savecomments')->name('post_comments');
@@ -129,16 +115,23 @@ Route::post('report/{r_id}/{n_id}', 'HomeController@updateReport')->name('report
 
 Route::get('/editrequest/{u_id}/{r_id}/{r_date}', 'HomeController@editrequest');
 
-Route::get('approvaledit/{n_id}/{u_id}/{r_id}/{r_date}', 'ManagementController@approvaledit')->name('approvaledit');
-Route::post('approvaledit/{n_id}/{u_id}/{r_id}/{r_date}', 'ManagementController@approvaledit')->name('approvaledit');
+Route::get('empapprovaledit/{n_id}/{u_id}/{r_id}/{r_date}', 'ManagementController@empapprovaledit')->name('empapprovaledit');
+Route::post('empapprovaledit/{n_id}/{u_id}/{r_id}/{r_date}', 'ManagementController@empapprovaledit')->name('empapprovaledit');
+
+Route::get('mgrapprovaledit/{n_id}/{u_id}/{r_id}/{r_date}', 'HomeController@mgrapprovaledit')->name('mgrapprovaledit');
+Route::post('mgrapprovaledit/{n_id}/{u_id}/{r_id}/{r_date}', 'HomeController@mgrapprovaledit')->name('mgrapprovaledit');
 
 Route::get('approvedreq/{r_id}/{n_id}', 'ManagementController@approvedreq');
 Route::get('disapprovedreq/{r_id}/{n_id}', 'ManagementController@disapprovedreq');
-
 Route::get('approvalreject/{n_id}', 'ManagementController@approvalreject');
 
 Route::get('maskAsRead', function (){
     auth()->user()->unreadNotifications->markAsRead();
     return redirect()->back();
 })->name('markRead');
+
+Route::get('listmissreports/{u_id}/{r_date}', 'TopManagementController@listmissreports');
+Route::get('mgreportcmt/{n_id}/{u_id}/{r_date}', 'ManagementController@mgreportcmt')->name('mgreportcmt');
+Route::get('empreportcmt/{n_id}/{r_date}', 'ManagementController@empreportcmt')->name('empreportcmt');
+
 

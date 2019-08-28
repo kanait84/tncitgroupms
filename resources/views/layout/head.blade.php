@@ -7,8 +7,6 @@
   <title>TNC IT Group Management System</title>
 
   <link href="{{ asset('asset/img/favicon.png')}}" rel="icon">
-  <link href="asset/img/apple-touch-icon.png" rel="apple-touch-icon">
-
   <link href="{{ asset('asset/lib/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
   <link href="{{ asset('asset/lib/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />

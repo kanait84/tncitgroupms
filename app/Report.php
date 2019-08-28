@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Report extends Model
 {
@@ -25,5 +26,6 @@ class Report extends Model
 	{
 		return $this->hasMany('App\Comment', 'r_id', 'r_id');
 	}
+
 
 }

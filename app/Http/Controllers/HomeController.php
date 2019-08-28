@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Notifications\EditRequest;
+use App\Notifications\RejectRequest;
+use App\Notifications\ReportComment;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
@@ -93,30 +95,39 @@ class HomeController extends Controller
             ->where('id', $n_id)->get();
         $report = Report::where('r_id', $r_id)->with('user')->first();
 
-        if(isset($notified) && (is_null($notified[0]->read_at))){
-            if($request->description){
-                if($request->hasfile('attachment'))
-                {
-                    $file = $request->file('attachment');
-                    $destinationPath = 'report_attachment/';
-                    $originalFile = $file->getClientOriginalExtension();
-                    $filename =  $report->date .'-'. $report->u_id .'.'. $originalFile;
-                    $file->move($destinationPath, $filename);
-                    Report::where('r_id',$r_id)->update(['attachment'=>$request->attachment, 'file_type'=>$originalFile]);
-                }
-                Report::where('r_id',$r_id)->update(['description'=>$request->description, 'edit_request'=> 0]);
-                $currdate = date('Y-m-d H:i:s');
-                DB::table('notifications')
-                    ->where('id', $n_id)
-                    ->update(array('read_at' => $currdate));
-                return redirect('/home?d='.$report->date)->with('success','Your Report has been updated successfully!');
-            }
 
+        $notifiable_id =$notified[0]->notifiable_id;
+        $notifyArr = json_decode($notified[0]->data);
+        $notify_u_id = $notifyArr->u_id;
+        $notify_r_id = $notifyArr->r_id;
+        $notify_r_date =  $notifyArr->reportdate;
+
+        if($notify_r_id==$r_id){
+            if(isset($notified) && (is_null($notified[0]->read_at))){
+                if($request->description){
+                    if($request->hasfile('attachment'))
+                    {
+                        $file = $request->file('attachment');
+                        $destinationPath = 'report_attachment/';
+                        $originalFile = $file->getClientOriginalExtension();
+                        $filename =  $report->date .'-'. $report->u_id .'.'. $originalFile;
+                        $file->move($destinationPath, $filename);
+                        Report::where('r_id',$r_id)->update(['attachment'=>$request->attachment, 'file_type'=>$originalFile]);
+                    }
+                    Report::where('r_id',$r_id)->update(['description'=>$request->description, 'edit_request'=> 0]);
+                    $currdate = date('Y-m-d H:i:s');
+                    DB::table('notifications')
+                        ->where('id', $n_id)
+                        ->update(array('read_at' => $currdate));
+                    return redirect('/home?d='.$report->date)->with('success','Your Report has been updated successfully!');
+                }
+            } else {
+                return redirect('/home')->with('error','Notification of the Report has been expired!');
+            }
         } else {
-            return redirect('/home')->with('error','Notification of the Report has been expired!');
+            return redirect('/home')->with('error','Wrong Report Update is not allowed!');
         }
         return view('updatereport', compact('report', 'n_id'));
-
     }
 
     public function postReport(Request $request){
@@ -158,4 +169,26 @@ class HomeController extends Controller
         return redirect('/home?d='.$r_date)->with('success','Your Request has been sent to your Manager successfully!');
     }
 
-}
+    public function mgrapprovaledit($n_id, $u_id, $r_id, $r_date) {
+        $notify = DB::table('notifications')
+            ->where('id', $n_id)->get();
+        $notifiable_id =$notify[0]->notifiable_id;
+        $notifyArr = json_decode($notify[0]->data);
+        $notify_u_id = $notifyArr->u_id;
+        $notify_r_id = $notifyArr->r_id;
+        $notify_r_date =  $notifyArr->reportdate;
+        if($u_id==Auth::user()->id){
+            return redirect('/report/'.$r_id.'/'.$n_id);
+        } elseif($notify_r_id==$r_id){
+            $report = Report::where('r_id', $r_id)->get();
+            $user = User::find($u_id);
+            $d_id = $user->d_id;
+            $mgr = User::where('d_id', $d_id)->where('sd_id', 3)->first();
+            $mgr_id = $mgr->id;
+            return view('approvalEditRequest', compact('report', 'mgr_id', 'u_id','r_id', 'n_id', 'r_date',
+                'seldate', 'allreports', 'n_id'));
+        } else {
+            return redirect('/home');
+        }
+    }
+    }

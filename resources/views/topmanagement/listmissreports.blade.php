@@ -21,52 +21,27 @@
     <section id="main-content">
       <section class="wrapper site-min-height">
         <div class="col-lg-9 ds">
-            <?php
-                $getweek = isset($_GET['dweek']) && ($_GET['dweek']!='') ? 'Last 7 Days' : '';
-                $getmonth = isset($_GET['lmonth']) && ($_GET['lmonth']!='') ? 'Last 30 Days' : '';
-                $getlday = isset($_GET['d']) && ($_GET['d']!='') ? 'Last Day' : '';
-            ?>
-            <h3> Missed Reports - {{$getlday.$getweek.$getmonth}}</h3>
+
+            <h3> Missed Report Dates - {{$misseduser}} (Last {{$datediff}} Days)</h3>
                 <!-- page start-->
                 <div class="content-panel">
                     <div class="adv-table">
-                        <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered"
-                               @if(count($listusers)>0) id="hidden-table-info" @endif>
+                        <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
                             <thead>
                             <tr>
-                                <th width="20%">Name</th>
-                                <th width="15%">Email</th>
-                                <th width="20%">Department</th>
-                                <th width="20%">SubDepartment</th>
-                                @if($getweek!='' || $getmonth!='')
-                                    <th width="10%">Days</th>
-                                @endif
+                                <th width="50%">Date</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($listusers as $user)
+                            @forelse($filterdates as $k=>$v)
                             <tr class="gradeA">
-                                <td>{{isset($user->name) ? $user->name : ''}}</td>
-                                <td>{{isset($user->email) ? $user->email : ''}}</td>
-                                <td>{{isset($user->department->d_title) ? $user->department->d_title : ''}}</td>
-                                <td>{{isset($user->subdepartment->sd_title) ? $user->subdepartment->sd_title : ''}}</td>
-                                @if($getweek!='')
-                                    <td align="center"><a href="listmissreports/{{$user->id."/".$lweek}}">
-                                            @if($user->missdates>0)
-                                            {{$user->missdates}}
-                                                @else
-                                            {{0}}
-                                            @endif
-                                        </a></td>
-                                @endif
+                                <td>
+                                    {{$v}}
+                                </td>
                             </tr>
                             @empty
                                 <tr class="gradeX">
-                                    @if($getweek!='')
-                                        <td colspan="5">No Records found</td>
-                                        @else
-                                        <td colspan="4">No Records found</td>
-                                    @endif
+                                    <td>No Records found</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -88,7 +63,6 @@
                 <h3 class="popover-title" style="disadding: none;"></h3>
                 <div id="date-popover-content" class="popover-content"></div>
               </div>
-              <div id="my-calendar"></div>
             </div>
           </div>
         </div>
@@ -125,7 +99,7 @@
         <!--new earning end-->
         <!-- RECENT ACTIVITIES SECTION -->
         <h4 class="centered mt">RECENT ACTIVITY</h4>
-          @forelse($recentreports as $report)
+          @foreach($recentreports as $report)
               <?php
               $currtime = date('Y-m-d H:i:s');
               $to_time = strtotime($currtime);
@@ -160,10 +134,7 @@
                       </p>
                   </div>
               </div>
-          @empty
-              <hr />
-              <div align="center"><p>No Activities</p></div>
-      @endforelse
+      @endforeach
         <!-- USERS ONLINE SECTION -->
         <!-- CALENDAR-->
         <!-- / calendar -->
@@ -200,14 +171,5 @@
 <!--script for this page-->
 <script src="{{ asset('asset/lib/sparkline-chart.js') }}"></script>
 <script src="{{ asset('asset/lib/zabuto_calendar.js') }}"></script>
-
-<script type="text/javascript" language="javascript" src="{{ asset('asset/lib/advanced-datatable/js/jquery.dataTables.js') }}"></script>
-<script type="text/javascript" src="{{ asset('asset/lib/advanced-datatable/js/DT_bootstrap.js') }}"></script>
-<script type="text/javascript">
-  $(document).ready(function() {
-       $('#hidden-table-info').dataTable();
-  });
-</script>
-
 </body>
 </html>

@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="Dashboard">
   <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-  <title>Dashio - Bootstrap Admin Template</title>
+  <title>TNC IT GROUP MANAGEMENT SYSTEM</title>
   <!-- Favicons -->
   <link href="img/favicon.png" rel="icon">
   <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -27,10 +27,6 @@
 </style>
 </head>
 
-<style>
-#zabuto_calendar_{{$seldate}} { background: #fff; }
-div#zabuto_calendar_{{$seldate}}_day { color:#000!important; }
-</style>
 <body>
   <?php
   $i=0; $alldates = array();
@@ -102,7 +98,7 @@ foreach($diff_result as $k=>$v){
               <div class="profile-pic">
 
                 <p>
-                  <img src="/photo_storage/{{$user->email}}.png" class="img-circle"></p>
+                  <img src="/photo_storage/{{$user->emp_photo}}" class="img-circle"></p>
                   <p>
                   </p>
                 </div>
@@ -388,6 +384,19 @@ foreach($diff_result as $k=>$v){
         console.log('Triggered',myString)
       }
     </script>
+  <script type="text/javascript">
+      $(document).ready(function () {
+          //Disable cut copy paste
+          $('body').bind('cut copy paste', function (e) {
+              e.preventDefault();
+          });
+
+          //Disable mouse right click
+          $("body").on("contextmenu",function(e){
+              return false;
+          });
+      });
+  </script>
   </body>
 
   </html>

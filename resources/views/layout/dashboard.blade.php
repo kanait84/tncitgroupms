@@ -30,12 +30,37 @@
                                 <span class="label label-danger"><i class="fa fa-bolt"></i></span>
                                 <span style="white-space: pre-line">{{$notification->data['data']}}</span>
                             </a></li>
-                    @else
-                        <li style="background-color: lightgrey">
-                            <a href="{{ url("approvaledit/".$notification->id.'/'.$notification->data['u_id'].'/'.$notification->data['r_id'].'/'.$notification->data['reportdate'])}}">
-                                <span class="label label-danger"><i class="fa fa-bolt"></i></span>
-                                <span style="white-space: pre-line">{{htmlentities($notification->data['data'])}}</span>
-                            </a></li>
+                    @elseif($notification->type=="App\Notifications\ReportComment")
+
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("empreportcmt/".$notification->id."/".$notification->data['reportdate'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                            @elseif(auth()->user()->type == 'management')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("mgreportcmt/".$notification->id."/".$notification->data['u_id']."/".$notification->data['reportdate'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+                    @elseif($notification->type=="App\Notifications\EditRequest")
+                        @if(auth()->user()->type == 'management')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("mgrapprovaledit/".$notification->id."/".$notification->data['u_id']."/".$notification->data['r_id']."/".$notification->data['reportdate'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+                    @elseif($notification->type=="App\Notifications\ApproveRequest")
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("mgrapprovaledit/".$notification->id."/".$notification->data['u_id']."/".$notification->data['r_id']."/".$notification->data['reportdate'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
                     @endif
                 @endforeach
         </ul>

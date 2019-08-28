@@ -5,6 +5,7 @@ use App\Comment;
 use App\Notifications\ApproveRequest;
 use App\Notifications\EditRequest;
 use App\Notifications\RejectRequest;
+use App\Notifications\ReportComment;
 use Illuminate\Http\Request;
 use App\User;
 use App\Report;
@@ -24,15 +25,12 @@ class ManagementController extends Controller
         if(Auth::user()->type == 'management'){
             $subdepartments = Subdepartment::where('d_id', Auth::user()->d_id)->where('sd_id', '!=',3)->get();
             $usercount = User::where('d_id', Auth::user()->d_id)->count();
-
             $curruid = Auth::user()->id;
             $users = User::where('d_id', Auth::user()->d_id)->whereRaw("id!= $curruid")->with('subdepartment')->get();
             $ulist = array();
             foreach($users as $k=>$v){  $ulist[] = $v->id; }
             if (is_array($ulist) && count($ulist)>1){ $alluid = implode(',',$ulist); } else { $alluid = $ulist[0]; }
-
             $reports = Report::whereIn('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
-
             $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
                 ->whereIn('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
             $seldate = date('Y-m-d');
@@ -89,13 +87,11 @@ class ManagementController extends Controller
         $allreports = Report::where('u_id', $id)->with('user', 'comments')->orderBy('date', 'DESC')->get();
         return view('management.m_staffreport', compact('reports', 'user', 'user_details', 'uid',
             'currcomments', 'seldate', 'allreports'));
-
     }
 
 
     public function savecomments(Request $request)
     {
-
         $user = Auth::user();
         $uid = $user->id;
         $comment = new Comment;
@@ -104,8 +100,17 @@ class ManagementController extends Controller
         $comment->comment = $request->comment;
         $comment->save();
 
+        $user = User::find($uid);
+        $d_id = $user->d_id;
+        $mgr = User::where('d_id', $d_id)->where('sd_id', 3)->first();
         $report = Report::where('r_id', $request->r_id)->with('user', 'comments')->first();
-        // echo "<pre>";print_r($report);
+        if(Auth::user()->type == 'employee') {
+            $mgr->notify(new ReportComment($user->name, $report->date, $uid, $report->r_id));
+        } elseif(Auth::user()->type == 'management') {
+            $ruser = User::find($report->u_id);
+            $ruser->notify(new ReportComment($user->name, $report->date, $ruser->id, $report->r_id));
+        }
+
         $i=0;
         $user_details = $commentArr = array();
         $commentArr = $report->comments;
@@ -194,10 +199,14 @@ class ManagementController extends Controller
 
 
     public function approvaledit($n_id, $u_id, $r_id, $r_date) {
+        $notify = DB::table('notifications')
+            ->where('id', $n_id)->get();
+        $notifyArr = json_decode($notify[0]->data);
+        $notify_r_id = $notifyArr->r_id;
 
 	    if($u_id==Auth::user()->id){
             return redirect('/report/'.$r_id.'/'.$n_id);
-        } else {
+        } elseif($notify_r_id==$r_id){
             $report = Report::where('r_id', $r_id)->get();
             $user = User::find($u_id);
             $d_id = $user->d_id;
@@ -205,6 +214,21 @@ class ManagementController extends Controller
             $mgr_id = $mgr->id;
             return view('approvalEditRequest', compact('report', 'mgr_id', 'u_id','r_id', 'n_id', 'r_date',
                 'seldate', 'allreports', 'n_id'));
+        } else {
+            return redirect('/home');
+        }
+    }
+
+    public function empapprovaledit($n_id, $u_id, $r_id, $r_date)
+    {
+        $notify = DB::table('notifications')
+            ->where('id', $n_id)->get();
+        $notifyArr = json_decode($notify[0]->data);
+        $notify_r_id = $notifyArr->r_id;
+        if($notify_r_id==$r_id){
+            return redirect('/report/'.$r_id.'/'.$n_id);
+        } else {
+            return redirect('/home');
         }
     }
 
@@ -232,14 +256,29 @@ class ManagementController extends Controller
             ->where('id', $n_id)
             ->update(array('read_at' => $currdate));
         $user->notify(new RejectRequest($mgr->name, $report[0]->date, $report[0]->u_id, $r_id));
-        return redirect('/home')->with('warning','Report has been rejected successfully!');
+        return redirect('/home')->with('warning','Edit Report has been rejected successfully!');
     }
 
     public function approvalreject($n_id) {
         DB::table('notifications')
             ->where('id', $n_id)
             ->delete();
-        return redirect('/home')->with('error','Report has been rejected successfully!');
+        return redirect('/home')->with('warning','Edit Report has been rejected successfully!');
     }
 
+    public function mgreportcmt($n_id, $u_id, $r_date) {
+        $currdate = date('Y-m-d H:i:s');
+        DB::table('notifications')
+            ->where('id', $n_id)
+            ->update(array('read_at' => $currdate));
+        return redirect('/mviewemployee/'.$u_id."?d=".$r_date);
+    }
+
+    public function empreportcmt($n_id, $r_date) {
+        $currdate = date('Y-m-d H:i:s');
+        DB::table('notifications')
+            ->where('id', $n_id)
+            ->update(array('read_at' => $currdate));
+        return redirect('/home?d='.$r_date);
+    }
 }

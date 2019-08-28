@@ -19,19 +19,6 @@ class SubmanagementController extends Controller
 	}
 
 
-	/*public function submanagement()
-	{
-        if(Auth::user()->type == 'submanagement'){
-            $subdepartments = Subdepartment::where('d_id', Auth::user()->d_id)->where('sd_id', '=',Auth::user()->sd_id)->get();
-            $seldate = date('Y-m-d');
-            return view('submanagement.submanagement', compact('subdepartments', 'seldate'));
-        }
-        else {
-            return view('/home');
-        }
-    }*/
-
-
     public function smViewSubdepartment(Request $request)
     {
         $curruid = Auth::user()->id;
@@ -67,6 +54,7 @@ class SubmanagementController extends Controller
                 $user_details[$i]['name'] = $cuser->name;
                 $user_details[$i]['type'] = $cuser->type;
                 $user_details[$i]['email'] = $cuser->email;
+                $user_details[$i]['emp_photo'] = $cuser->emp_photo;
                 $user_details[$i]['comment'] = $v->comment;
                 $user_details[$i]['commentid'] = $v->id;
                 $user_details[$i]['rid'] = $v->r_id;
@@ -104,6 +92,7 @@ class SubmanagementController extends Controller
             $user_details[$i]['name'] = $cuser->name;
             $user_details[$i]['type'] = $cuser->type;
             $user_details[$i]['email'] = $cuser->email;
+            $user_details[$i]['emp_photo'] = $cuser->emp_photo;
             $user_details[$i]['comment'] = $v->comment;
             $user_details[$i]['commentid'] = $v->id;
             $user_details[$i]['rid'] = $v->r_id;

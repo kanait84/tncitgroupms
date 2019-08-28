@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class TopManagementController extends Controller
 {
-
 	public function __construct()
 	{
 		$this->middleware('auth');
@@ -41,7 +40,6 @@ class TopManagementController extends Controller
             ->whereRaw('Date(created_at) = CURDATE()')->count();
         $reports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
         $seldate = date('Y-m-d');
-
 		return view('topmanagement.departmentlist', compact('department', 'reports', 'usercount', 'todayreportcnt', 'seldate'));
 	}
 
@@ -115,17 +113,178 @@ class TopManagementController extends Controller
 
     public function missedReport(Request $request)
     {
+        if(Auth::user()->type == 'employee') {
+            return redirect('/home');
+        } else {
         $users = User::find(Auth::user()->id);
-        $reports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $d_id = $users->d_id;
+        $sd_id = $users->sd_id;
+        $departments = Department::all();
+            if(Auth::user()->type == 'management') {
+                $ausers = User::where('d_id', Auth::user()->d_id)
+                    ->whereRaw("id!= $users->id")->with('subdepartment')->get();
+                $usercount = User::where('d_id', Auth::user()->d_id)->with('subdepartment')->count();
+            } elseif(Auth::user()->type == 'submanagement') {
+                $ausers = User::where('d_id', Auth::user()->d_id)->where('sd_id', Auth::user()->sd_id)
+                    ->whereRaw("id!= $users->id")->with('subdepartment')->get();
+                $usercount = User::where('d_id', Auth::user()->d_id)->where('sd_id', Auth::user()->sd_id)
+                    ->with('subdepartment')->count();
+            } elseif(Auth::user()->type == 'topmanagement') {
+                $ausers = User::whereRaw("id!= $users->id")->with('subdepartment')->get();
+                $usercount = User::all()->count();
+            }
+        $ulist = array();
+        foreach($ausers as $k=>$v){  $ulist[] = $v->id; }
+        if (is_array($ulist) && count($ulist)>1){ $alluid = implode(',',$ulist); } else { $alluid = $ulist[0]; }
+
+        if(Auth::user()->type == 'topmanagement') {
+            $recentreports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+            $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
+                ->whereRaw('Date(created_at) = CURDATE()')->count();
+        } else {
+            $recentreports = Report::whereIn('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+            $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
+                ->whereIn('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
+        }
+
+        $seldate = date('Y-m-d');
+        $yesterday = date("Y-m-d", mktime(0, 0, 0, date("m") ,
+            date("d")-1,date("Y")));
+        $lweek = date("Y-m-d", mktime(0, 0, 0, date("m") ,
+            date("d")-7,date("Y")));
+        $lmonth = date("Y-m-d", strtotime('-1 month', time()));
+
+            if(isset($request->d)){
+                $cdate = date('Y-m-d', strtotime($request->d));
+                //Convert the date string into a unix timestamp.
+                $unixTimestamp = strtotime($cdate);
+                $filterdate = $request->d;
+                $dayOfWeek = date("l", $unixTimestamp);
+                $uid_Arr = $alluid_Arr = $filteredusers = array();
+                if($dayOfWeek=='Saturday' || $dayOfWeek=='Friday'){
+                    $reports = $listusers = array();
+                } else {
+                    $reports = DB::table('reports')->select('u_id')
+                        ->where('date', $cdate)
+                        ->whereRaw("DAYNAME(date) NOT IN ('Saturday', 'Friday')")
+                        ->orderBy('date', 'DESC')->get();
+                    foreach($reports as $k=>$v){ $uid_Arr[] = $v->u_id; }
+                    if(Auth::user()->type == 'management') {
+                        $allusers = User::where('d_id', $d_id)->whereRaw("id!= $users->id")->get();
+                    } elseif(Auth::user()->type == 'submanagement') {
+                        $allusers = User::where('d_id', $d_id)->where('sd_id', $sd_id)->whereRaw("id!= $users->id")->get();
+                    } elseif(Auth::user()->type == 'topmanagement') {
+                        $allusers = User::whereRaw("id!= $users->id")->get();
+                    }
+                    foreach($allusers as $k=>$v){ $alluid_Arr[] = $v->id; }
+                    $filteredusers = array_diff($alluid_Arr, $uid_Arr);
+                    $listusers = User::whereIn('id', $filteredusers)->with('department', 'subdepartment')->get();
+                }
+                return view('topmanagement.missedreport', compact('reports', 'users', 'departments',
+                    'usercount', 'todayreportcnt', 'recentreports','seldate', 'listusers', 'filterdate',
+                    'yesterday', 'lweek', 'lmonth'));
+            }
+            elseif(isset($request->dweek)){
+                $cdate = date('Y-m-d', strtotime($request->dweek));
+                $filterdate = $dweek = isset($request->dweek) ? $request->dweek : '';
+                $uid_Arr = $alluid_Arr = $filteredusers = array();
+                $reports = DB::table('reports')->select('u_id', 'date')
+                    ->whereBetween('date', [$cdate, $seldate])
+                    ->whereRaw("DAYNAME(date) NOT IN ('Saturday', 'Friday')")
+                    ->orderBy('date', 'DESC')->get();
+                foreach($reports as $k=>$v){
+                    $uid_Arr[] = $v->u_id;
+                    $reportdates[] = $v->date;
+                    }
+
+                if(Auth::user()->type == 'management') {
+                    $allusers = User::where('d_id', $d_id)->whereRaw("id!= $users->id")->get();
+                } elseif(Auth::user()->type == 'submanagement') {
+                    $allusers = User::where('d_id', $d_id)->where('sd_id', $sd_id)->whereRaw("id!= $users->id")->get();
+                } elseif(Auth::user()->type == 'topmanagement') {
+                    $allusers = User::whereRaw("id!= $users->id")->get();
+                }
+
+                foreach($allusers as $k=>$v){ $alluid_Arr[] = $v->id; }
+                $date_from = strtotime($cdate); // Convert date to a UNIX timestamp
+                $date_to = strtotime($seldate); // Convert date to a UNIX timestamp
+                for ($i=$date_from; $i<$date_to; $i+=86400) {
+                    $dayofweek = date("l", $i);
+                    if($dayofweek!='Friday' && $dayofweek!='Saturday'){
+                        $alldates[] = date("Y-m-d", $i);
+                    }
+                }
+                $listusers = User::whereIn('id', $alluid_Arr)
+                    ->with('department', 'subdepartment')->get();
+                foreach ($listusers as $k=>$v){
+                    $reportcounts = Report::where('u_id',$v->id)
+                        ->where('date','>=',$cdate)
+                        ->where('date','<=',$seldate)
+                             ->count();
+                    $ureports = Report::where('u_id',$v->id)
+                        ->where('date','>=',$cdate)
+                        ->where('date','<=',$seldate)
+                         ->get();
+                    $countaldates = count($alldates);
+                    $countureports = count($ureports);
+                    if($reportcounts==0){
+                        $v->missdates = $countaldates;
+                    }
+                    if($countureports!=0){
+                        $v->missdates = ($countaldates - $countureports);
+                    }
+                }
+                return view('topmanagement.missedreport', compact('reports', 'users', 'departments',
+                    'usercount', 'todayreportcnt', 'recentreports','seldate', 'listusers', 'filterdate',
+                    'yesterday', 'lweek', 'lmonth'));
+            }
+            else {
+                return redirect('/home');
+            }
+        }
+    }
+
+    public function allmissedReports($u_id, $r_date)
+    {
+        $seldate = date('Y-m-d');
+        $reports = DB::table('reports')
+            ->where('u_id', $u_id)
+            ->where('date','>=',$r_date)
+            ->where('date','<=',$seldate)
+            ->whereRaw("DAYNAME(date) NOT IN ('Saturday', 'Friday')")
+            ->orderBy('date', 'DESC')->get();
+        return $reports;
+    }
+
+    public function listmissreports($u_id, $r_date)
+    {
+        $users = User::find(Auth::user()->id);
+        $d_id = $users->d_id;
+        $sd_id = $users->sd_id;
+        $recentreports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
         $departments = Department::all();
         $usercount = User::all()->count();
         $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
             ->whereRaw('Date(created_at) = CURDATE()')->count();
+        $alldates = $filterdates = $reportdates = array();
         $seldate = date('Y-m-d');
-        return view('topmanagement.missedreport', compact('reports', 'users', 'departments',
-            'usercount', 'todayreportcnt', 'seldate' ));
+        $reports = $this->allmissedReports($u_id, $r_date);
+        $misseduser = User::find($u_id)->name;
+        foreach($reports as $k=>$v){
+            $reportdates[] = $v->date;
+        }
+        $date_from = strtotime($r_date); // Convert date to a UNIX timestamp
+        $date_to = strtotime($seldate); // Convert date to a UNIX timestamp
+        for ($i=$date_from; $i<$date_to; $i+=86400) {
+            $unixTimestamp = strtotime($i);
+            $dayofweek = date("l", $i);
+            if($dayofweek!='Friday' && $dayofweek!='Saturday'){
+                $alldates[] = date("Y-m-d", $i);
+            }
+        }
+        $filterdates = array_diff($alldates, $reportdates);
+        $datediff = ($date_to - $date_from)/60/60/24;
+        return view('topmanagement.listmissreports', compact('datediff','misseduser','filterdates',
+            'users', 'departments', 'usercount', 'todayreportcnt', 'recentreports','seldate'));
     }
-
-
-
 }

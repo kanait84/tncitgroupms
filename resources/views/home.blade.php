@@ -157,7 +157,7 @@ foreach($diff_result as $k=>$v){
 
                     <div class="row">
                       <div class="col-md-9">
-                        <p class="p-bck" style="white-space: pre-line">
+                        <p class="p-bck no-copy-paste" style="white-space: pre-line">
                             <name>{{$report->description}}</name>
                         </p>
                           @if($report->attachment != "")
@@ -222,14 +222,10 @@ foreach($diff_result as $k=>$v){
                                 <div align='left' style=''>
                                 </div>";
                               }
-                            }
-
-
-                            ?>
+                            } ?>
                           </div>
 
                           <h4><i class="fa fa-angle-right"></i>Comment Section</h4>
-
                           <form id="commentform">
                             @csrf
                             <input type="hidden" name="u_id" value="{{$report->user->id}}">
@@ -244,7 +240,6 @@ foreach($diff_result as $k=>$v){
                                     <div class="validate"></div>
                                   </div>
                                 </div>
-
                                 <p>&nbsp;</p>
                               </p>
                             </div>
@@ -253,57 +248,39 @@ foreach($diff_result as $k=>$v){
                           <script>
                             $(document).ready(function(){
                               $('#commentform').submit(function(){
+                                    // show that something is loading
+                                    //$('#response').html("<b>Loading response...</b>");
+                                       $.ajax({
+                                        type: 'POST',
+                                        url: '/post_comments',
+                                        data: $(this).serialize()
+                                      })
+                                       .done(function(data){
+                                            // show the response
+                                            $('#all_posts').html(data);
 
-        // show that something is loading
-        //$('#response').html("<b>Loading response...</b>");
-
-        /*
-         * 'post_receiver.php' - where you will pass the form data
-         * $(this).serialize() - to easily read form data
-         * function(data){... - data contains the response from post_receiver.php
-           */
-           $.ajax({
-            type: 'POST',
-            url: '/post_comments',
-            data: $(this).serialize()
-          })
-           .done(function(data){
-
-                // show the response
-                $('#all_posts').html(data);
-
-              })
-           .fail(function() {
-
-                // just in case posting your form failed
-                alert( "Posting failed." );
-
-              });
-
-        // to prevent refreshing the whole page page
-        return false;
-      });
-
-
+                                          })
+                                       .fail(function() {
+                                            // just in case posting your form failed
+                                            alert( "Posting failed." );
+                                          });
+                                    // to prevent refreshing the whole page page
+                                    return false;
+                                  });
                             });
                           </script>
-
                         </div>
                         <!-- /showback -->
                       </div>
-
                     </div>
                   </div>
-
                   <!-- /Message Panel-->
                 </div>
                 <!-- /col-md-8  -->
               </div>
-
               @empty
               No Reports
               @endforelse
-
             </div>
             <!-- /col-lg-9 END SECTION MIDDLE -->
         <!-- **********************************************************************************************************************************************************
@@ -408,6 +385,19 @@ foreach($diff_result as $k=>$v){
         console.log('Triggered',myString)
       }
     </script>
+  <script type="text/javascript">
+      $(document).ready(function () {
+          //Disable cut copy paste
+          $('body').bind('cut copy paste', function (e) {
+              e.preventDefault();
+          });
+
+          //Disable mouse right click
+          $("body").on("contextmenu",function(e){
+              return false;
+          });
+      });
+  </script>
   </body>
 
   </html>
