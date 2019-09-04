@@ -19,7 +19,7 @@
     @include('layout.dashboard')
     @include('layout.sidenav')
     <section id="main-content">
-      <section class="wrapper site-min-height">
+      <section class="wrapper">
         <div class="col-lg-9 ds">
             <?php
                 $getweek = isset($_GET['dweek']) && ($_GET['dweek']!='') ? 'Last 7 Days' : '';
@@ -207,6 +207,49 @@
   $(document).ready(function() {
        $('#hidden-table-info').dataTable();
   });
+</script>
+  <!--script for this page-->
+  <script src="{{ asset('asset/lib/zabuto_calendar.js') }}"></script>
+  <script type="application/javascript">
+      $(document).ready(function() {
+          $("#date-popover").popover({
+              html: true,
+              trigger: "manual"
+          });
+          $("#date-popover").hide();
+          $("#date-popover").click(function(e) {
+              $(this).hide();
+          });
+          $("#my-calendar").zabuto_calendar({
+              action: function() {
+                  return myDateFunction(this.id, true);
+              },
+              action_nav: function() {
+                  return myNavFunction(this.id);
+              },
+              legend: [{
+                  type: "text",
+                  label: "Special event",
+                  badge: "00"
+              },
+                  {
+                      type: "block",
+                      label: "Regular event",
+                  }
+              ]
+          });
+      });
+      function myNavFunction(id) {
+          $("#date-popover").hide();
+          var nav = $("#" + id).data("navigation");
+          var to = $("#" + id).data("to");
+          console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+      }
+      function myDateFunction(date) {
+          myString = date.substring(date.length - 10);
+          window.location.href = '/home?d='+myString;
+          console.log('Triggered',myString)
+      }
 </script>
 
 </body>

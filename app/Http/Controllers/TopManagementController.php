@@ -123,13 +123,13 @@ class TopManagementController extends Controller
             if(Auth::user()->type == 'management') {
                 $ausers = User::where('d_id', Auth::user()->d_id)
                     ->whereRaw("id!= $users->id")->with('subdepartment')->get();
-                $usercount = User::where('d_id', Auth::user()->d_id)->with('subdepartment')->count();
+                $usercount = User::where('d_id', Auth::user()->d_id)->whereRaw("id!= $users->id")->with('subdepartment')->count();
             } elseif(Auth::user()->type == 'submanagement') {
-                $ausers = User::where('d_id', Auth::user()->d_id)->where('sd_id', Auth::user()->sd_id)
+                $ausers = User::where('d_id', Auth::user()->d_id)->whereRaw("id!= $users->id")->where('sd_id', Auth::user()->sd_id)
                     ->whereRaw("id!= $users->id")->with('subdepartment')->get();
-                $usercount = User::where('d_id', Auth::user()->d_id)->where('sd_id', Auth::user()->sd_id)
+                $usercount = User::where('d_id', Auth::user()->d_id)->whereRaw("id!= $users->id")->where('sd_id', Auth::user()->sd_id)
                     ->with('subdepartment')->count();
-            } elseif(Auth::user()->type == 'topmanagement') {
+            } elseif(Auth::user()->type == 'topmanagement' || Auth::user()->type == 'admin') {
                 $ausers = User::whereRaw("id!= $users->id")->with('subdepartment')->get();
                 $usercount = User::all()->count();
             }
@@ -137,14 +137,14 @@ class TopManagementController extends Controller
         foreach($ausers as $k=>$v){  $ulist[] = $v->id; }
         if (is_array($ulist) && count($ulist)>1){ $alluid = implode(',',$ulist); } else { $alluid = $ulist[0]; }
 
-        if(Auth::user()->type == 'topmanagement') {
+        if(Auth::user()->type == 'topmanagement'  || Auth::user()->type == 'admin') {
             $recentreports = Report::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
             $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
                 ->whereRaw('Date(created_at) = CURDATE()')->count();
         } else {
-            $recentreports = Report::whereIn('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+            $recentreports = Report::orWhereRaw('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
             $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
-                ->whereIn('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
+                ->orWhereRaw('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
         }
 
         $seldate = date('Y-m-d');
@@ -173,12 +173,12 @@ class TopManagementController extends Controller
                         $allusers = User::where('d_id', $d_id)->whereRaw("id!= $users->id")->get();
                     } elseif(Auth::user()->type == 'submanagement') {
                         $allusers = User::where('d_id', $d_id)->where('sd_id', $sd_id)->whereRaw("id!= $users->id")->get();
-                    } elseif(Auth::user()->type == 'topmanagement') {
+                    } elseif(Auth::user()->type == 'topmanagement' || Auth::user()->type == 'admin') {
                         $allusers = User::whereRaw("id!= $users->id")->get();
                     }
                     foreach($allusers as $k=>$v){ $alluid_Arr[] = $v->id; }
-                    $filteredusers = array_diff($alluid_Arr, $uid_Arr);
-                    $listusers = User::whereIn('id', $filteredusers)->with('department', 'subdepartment')->get();
+                    $filteredusers = array_values(array_diff($alluid_Arr, $uid_Arr));
+                    $listusers = User::Wherein('id', $filteredusers)->whereRaw("id!= $users->id")->with('department', 'subdepartment')->get();
                 }
                 return view('topmanagement.missedreport', compact('reports', 'users', 'departments',
                     'usercount', 'todayreportcnt', 'recentreports','seldate', 'listusers', 'filterdate',
@@ -201,7 +201,7 @@ class TopManagementController extends Controller
                     $allusers = User::where('d_id', $d_id)->whereRaw("id!= $users->id")->get();
                 } elseif(Auth::user()->type == 'submanagement') {
                     $allusers = User::where('d_id', $d_id)->where('sd_id', $sd_id)->whereRaw("id!= $users->id")->get();
-                } elseif(Auth::user()->type == 'topmanagement') {
+                } elseif(Auth::user()->type == 'topmanagement' || Auth::user()->type == 'admin') {
                     $allusers = User::whereRaw("id!= $users->id")->get();
                 }
 
@@ -214,7 +214,7 @@ class TopManagementController extends Controller
                         $alldates[] = date("Y-m-d", $i);
                     }
                 }
-                $listusers = User::whereIn('id', $alluid_Arr)
+                $listusers = User::WhereIn('id', $alluid_Arr)->whereRaw("id!= $users->id")
                     ->with('department', 'subdepartment')->get();
                 foreach ($listusers as $k=>$v){
                     $reportcounts = Report::where('u_id',$v->id)

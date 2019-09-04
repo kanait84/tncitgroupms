@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+@include('layout.head')
+<link href="asset/lib/advanced-datatable/css/demo_page.css" rel="stylesheet" />
+<link href="asset/lib/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+<link rel="stylesheet" href="asset/lib/advanced-datatable/css/DT_bootstrap.css" />
+<style>
+    #zabuto_calendar_{{$seldate}} { background: #fff; }
+    div#zabuto_calendar_{{$seldate}}_day { color:#000!important; }
+</style>
+<body>
+<?php
+$i=0; $alldates = array();
+if(isset($allreports)){
+    foreach ($allreports as $k=>$v){
+        $alldates[$i] = $v->date;
+        $i++;
+    }
+}
+$list=array();
+$month = date('m');
+$prevmonth1 = date('m', strtotime(date('Y-m')." -1 month"));
+$prevmonth2 = date('m', strtotime(date('Y-m')." -2 month"));
+$currdte = date('d');
+$year = date('Y');
+for($d=1; $d<=31; $d++)
+{
+    $time=mktime(12, 0, 0, $month, $d, $year);
+    if (date('m', $time)==$month)
+        if($currdte>=$d){
+            $list[]=date('Y-m-d', $time);
+        }
+}
+for($pred=1; $pred<=31; $pred++)
+{
+    $time=mktime(12, 0, 0, $prevmonth1, $pred, $year);
+    if (date('m', strtotime(date('Y-m')." -1 month"))==$prevmonth1)
+        $prevlist1[]=date('Y-m-d', $time);
+}
+for($pred2=1; $pred2<=31; $pred2++)
+{
+    $time=mktime(12, 0, 0, $prevmonth2, $pred2, $year);
+    if (date('m', strtotime(date('Y-m')." -2 month"))==$prevmonth2)
+        $prevlist2[]=date('Y-m-d', $time);
+}
+$list = array_merge($list, $prevlist1, $prevlist2);
+foreach($alldates as $k=>$v){ ?>
+<style>
+    div#zabuto_calendar_{{$v}}_day { color:#2a9055; }
+</style>
+<?php
+}
+$diff_result = array_diff($list, $alldates);
+$diff_result = array_values($diff_result);
+foreach($diff_result as $k=>$v){
+$currdate = date('m-d-Y');
+$v = date('Y-m-d', strtotime($v));
+if($v < $currdate){ ?>
+<style>
+    div#zabuto_calendar_{{$val}}_day { color:#ffff; }
+</style>
+<?php } else {
+$val = date('Y-m-d', strtotime($v)); ?>
+<style>
+    div#zabuto_calendar_{{$val}}_day { color:#ac2925!important; }
+</style>
+<?php
+}
+} ?>
+  <section id="container">
+    @include('layout.dashboard')
+    @include('layout.sidenav')
+    <section id="main-content">
+      <section class="wrapper">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row content-panel">
+              <div class="col-md-2 centered">
+                <div class="profile-pic">
+                  <p>
+                    <img src="/photo_storage/{{$user->email}}.png" class="img-circle"></p>
+                    <p>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4 profile-text">
+                  <h3>{{$user->name}}</h3>
+                   <h6>{{$user->position}}</h6>
+                  <h6>{{$user->department->d_title}} - {{$user->subdepartment->sd_title}}</h6>
+
+
+                  <p>{{$user->email}} || {{$user->mobile}} </p>
+                </div>
+                <div class="col-md-4 profile-text" style="margin-top: 35px ">
+                  <p>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8 main-chart">
+                @forelse($reports as $report)
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="message-p pn">
+                      <div class="message-header">
+                        <h5>Report Detail <strong>{{$report->date}}</strong></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-9">
+                          <p class="p-bck" style="white-space: pre-line">
+                            <name>{{$report->description}}</name>
+                          </p>
+                          @if($report->attachment != "")
+                          <p>Attachment: <a href="../report_attachment/{{$report->date}}-{{$user->id}}.{{$report->file_type}}" target="_blank" type="button" class="btn btn-primary btn-xs">Download</a>
+                            @else
+                            <p>No Attachment</p>
+                            @endif
+                          </p>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- /Message Panel-->
+                  </div>
+                  <!-- /col-md-8  -->
+                </div>
+<div class="row">
+<div class="col-md-12 mb">
+<div class="message-p pn">
+<div class="row">
+
+<div class="col-sm-12">
+
+  <!-- /showback -->
+  <!--  LABELS -->
+  <div class="showback">
+
+      <!-- where the response will be displayed -->
+      <div id='response'></div>
+      <div id='all_posts'>
+          <?php
+          $user_details = array_reverse($user_details);
+          if(is_array($user_details) && count($user_details)>0)
+          {
+              $user_details = array_reverse($user_details);
+              foreach($user_details as $k=>$v) {
+                  $cid = $v['commentid']; $rid = $v['rid']; $uid = $v['uid'];
+                  $useremail = $v['email'];
+                  $emp_photo = $v['emp_photo'];
+                  echo "<div class='row'>
+                        <div class='col-md-12 mb'>
+                        <div class='message-p pn'>
+                        <div class='row'>
+                        <div class='col-md-1 centered'>
+                        <div class='profile-pic pic-comment'>
+                        <p style='margin-top: 20px'>
+                        <img  src='/photo_storage/$emp_photo' class='img-circle' height='100px' width='100px'></p>
+                        <p>
+                        </p>
+                        </div>
+                        </div>
+                        <div class='col-md-8'>
+                        <p style='margin-top: 20px; margin-left: 25px;'> <strong> ".ucfirst($v['name'])."</strong></p>
+                        <p class='p-bck' style='margin-left: 25px;'>
+                        ".$v['comment']."
+                        </p>
+                        <p style='margin-left: 25px; color:#c9c9c9'>".$v['created']."</p>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        <div align='left' style=''>
+                        </div>
+
+                        ";
+              }
+          }
+          ?>
+      </div>
+
+  </div>
+  <!-- /showback -->
+</div>
+
+</div>
+</div>
+
+<!-- /Message Panel-->
+</div>
+<!-- /col-md-8  -->
+</div>
+
+                  @empty
+                  No Reports
+                  @endforelse
+
+                </div>
+                <!-- /col-lg-9 END SECTION MIDDLE -->
+        <!-- **********************************************************************************************************************************************************
+            RIGHT SIDEBAR CONTENT
+            *********************************************************************************************************************************************************** -->
+            <div class="col-lg-4">
+              <!-- CALENDAR-->
+              <div id="calendar" class="mb" style="margin-top: 20px;">
+                <div class="panel green-panel no-margin">
+                  <div class="panel-body">
+                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
+                      <div class="arrow"></div>
+                      <h3 class="popover-title" style="disadding: none;"></h3>
+                      <div id="date-popover-content" class="popover-content"></div>
+                    </div>
+                    <div id="my-calendar"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- / calendar -->
+            </div>
+            <!-- /col-lg-3 -->
+          </div>
+          <!-- /row -->
+        </section>
+      </section>
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+        <div class="text-center">
+          <p>
+            &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
+          </p>
+
+          <a href="profile.html#" class="go-top">
+            <i class="fa fa-angle-up"></i>
+          </a>
+        </div>
+      </footer>
+      <!--footer end-->
+    </section>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{{ asset('asset/lib/jquery/jquery.min.js') }}"></script>
+
+    <script src="{{ asset('asset/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script class="include" type="text/javascript" src="{{ asset('asset/lib/jquery.dcjqaccordion.2.7.js') }}"></script>
+    <script src="{{ asset('asset/lib/jquery.scrollTo.min.js') }}"></script>
+    <script src="{{ asset('asset/lib/jquery.nicescroll.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('asset/lib/jquery.sparkline.js') }}"></script>
+    <!--common script for all pages-->
+    <script src="{{ asset('asset/lib/common-scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('asset/lib/gritter/js/jquery.gritter.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('asset/lib/gritter-conf.js') }}"></script>
+    <!--script for this page-->
+    <script src="{{ asset('asset/lib/sparkline-chart.js') }}"></script>
+    <script src="{{ asset('asset/lib/zabuto_calendar.js') }}"></script>
+
+
+
+  <script type="application/javascript">
+      $(document).ready(function() {
+        $("#date-popover").popover({
+          html: true,
+          trigger: "manual"
+        });
+        $("#date-popover").hide();
+        $("#date-popover").click(function(e) {
+          $(this).hide();
+        });
+
+        $("#my-calendar").zabuto_calendar({
+          action: function() {
+            return myDateFunction(this.id, true);
+          },
+          action_nav: function() {
+            return myNavFunction(this.id);
+          },
+          ajax: {
+            url: "show_data.php?action=1",
+            modal: true
+          },
+          legend: [{
+            type: "text",
+            label: "Special event",
+            badge: "00"
+          },
+          {
+            type: "block",
+            label: "Regular event",
+          },
+          ]
+        });
+      });
+
+      function myNavFunction(id) {
+        $("#date-popover").hide();
+        var nav = $("#" + id).data("navigation");
+        var to = $("#" + id).data("to");
+        console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+      }
+
+      function myDateFunction(date) {
+        myString = date.substring(date.length - 10);
+          console.log(myString);
+        window.location.href = '/adminviewemployee/{{$user->id}}?d='+myString;
+        console.log('Triggered',myString);
+      }
+    </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Disable cut copy paste
+        $('body').bind('cut copy paste', function (e) {
+            e.preventDefault();
+        });
+
+        //Disable mouse right click
+        $("body").on("contextmenu",function(e){
+            return false;
+        });
+    });
+</script>
+  </body>
+
+  </html>

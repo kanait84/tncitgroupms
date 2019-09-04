@@ -5,11 +5,6 @@
 <link href="asset/lib/advanced-datatable/css/demo_page.css" rel="stylesheet" />
 <link href="asset/lib/advanced-datatable/css/demo_table.css" rel="stylesheet" />
 <link rel="stylesheet" href="asset/lib/advanced-datatable/css/DT_bootstrap.css" />
-<link rel="stylesheet" href="asset/lib/advanced-datatable/css/DT_bootstrap.css" />
-
-<!-- Custom styles for this template -->
-<link href="asset/css/style.css" rel="stylesheet">
-<link href="asset/css/style-responsive.css" rel="stylesheet">
 <style>
     #zabuto_calendar_{{$seldate}} { background: #fff; }
     div#zabuto_calendar_{{$seldate}}_day { color:#000!important; }
@@ -20,40 +15,38 @@
     @include('layout.sidenav')
     <section id="main-content">
       <section class="wrapper site-min-height">
-        <div class="col-lg-8 main-chart">
+        <div class="col-lg-9 ds" style="">
 
-            <h3> Missed Report Dates - {{$misseduser}} (Last {{$datediff}} Days)</h3>
-                <!-- page start-->
-                <div class="content-panel">
-                    <div class="adv-table">
-                        <table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">
-                            <thead>
-                            <tr>
-                                <th width="50%">Date</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($filterdates as $k=>$v)
-                            <tr class="gradeA">
-                                <td>
-                                    {{$v}}
-                                </td>
-                            </tr>
-                            @empty
-                                <tr class="gradeX">
-                                    <td>No Records found</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+          @foreach($users as $user)
+          <a href="{{ url('adminviewemployee')."/".$user->id}}"><div class="col-md-4 col-sm-4 mb" style="margin-top: 20px;">
+            <div class="darkblue-panel pn">
+              <div class="darkblue-header" style="padding-top: 15px;">
+                    <img src="/photo_storage/{{$user->email}}.png" class="img-circle" height="80px"></p>
 
-                <!-- page end-->
-            </div>
-            <!-- /row -->
+                <h5>{{$user->name}}</h5>
+                <h5>{{$user->position}}</h5>
 
+              </div>
+              <canvas id="serverstatus02" height="10" width="120"></canvas>
+              <canvas id="serverstatus02" height="10" width="120"></canvas>
+          <!--    <h1>10</h1>
+            <p>No. of Employee</p> -->
+
+            <button class="btn btn-xs btn-block" style="padding: 5px;">View Report</button>
+            <footer style="background-color: blue">
+              <div class="pull-left">
+                <!-- <h5><i class="fa fa-hdd-o"></i> </h5> -->
+              </div>
+              <div class="pull-right">
+                <h5></h5>
+              </div>
+            </footer>
+          </div>
+          <!--  /darkblue panel -->
+        </div></a>
+        @endforeach
       </div>
-      <div class="col-lg-4 ds">
+      <div class="col-lg-3 ds">
         <!--COMPLETED ACTIONS DONUTS CHART-->
         <div id="calendar" class="mb" style="margin-top: 20px;">
           <div class="panel green-panel no-margin">
@@ -63,7 +56,7 @@
                 <h3 class="popover-title" style="disadding: none;"></h3>
                 <div id="date-popover-content" class="popover-content"></div>
               </div>
-                <div id="my-calendar"></div>
+              <div id="my-calendar"></div>
             </div>
           </div>
         </div>
@@ -100,7 +93,7 @@
         <!--new earning end-->
         <!-- RECENT ACTIVITIES SECTION -->
         <h4 class="centered mt">RECENT ACTIVITY</h4>
-          @foreach($recentreports as $report)
+          @foreach($reports as $report)
               <?php
               $currtime = date('Y-m-d H:i:s');
               $to_time = strtotime($currtime);
@@ -170,47 +163,79 @@
 <script type="text/javascript" src="{{ asset('asset/lib/gritter/js/jquery.gritter.js') }}"></script>
 <script type="text/javascript" src="{{ asset('asset/lib/gritter-conf.js') }}"></script>
 <!--script for this page-->
+<script src="{{ asset('asset/lib/sparkline-chart.js') }}"></script>
 <script src="{{ asset('asset/lib/zabuto_calendar.js') }}"></script>
-  <script type="application/javascript">
-      $(document).ready(function() {
-          $("#date-popover").popover({
-              html: true,
-              trigger: "manual"
-          });
-          $("#date-popover").hide();
-          $("#date-popover").click(function(e) {
-              $(this).hide();
-          });
-          $("#my-calendar").zabuto_calendar({
-              action: function() {
-                  return myDateFunction(this.id, true);
-              },
-              action_nav: function() {
-                  return myNavFunction(this.id);
-              },
-              legend: [{
-                  type: "text",
-                  label: "Special event",
-                  badge: "00"
-              },
-                  {
-                      type: "block",
-                      label: "Regular event",
-                  }
-              ]
-          });
-      });
-      function myNavFunction(id) {
-          $("#date-popover").hide();
-          var nav = $("#" + id).data("navigation");
-          var to = $("#" + id).data("to");
-          console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+
+<!--script for this page-->
+<!-- MAP SCRIPT - ALL CONFIGURATION IS PLACED HERE - VIEW OUR DOCUMENTATION FOR FURTHER INFORMATION -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false"></script>
+<script>
+  $('.contact-map').click(function() {
+
+      //google map in tab click initialize
+      function initialize() {
+        var myLatlng = new google.maps.LatLng(40.6700, -73.9400);
+        var mapOptions = {
+          zoom: 11,
+          scrollwheel: false,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Dashio Admin Theme!'
+        });
       }
-      function myDateFunction(date) {
-          myString = date.substring(date.length - 10);
-          window.location.href = '/home?d='+myString;
-          console.log('Triggered',myString)
-      }
+      google.maps.event.addDomListener(window, 'click', initialize);
+    });
   </script>
+
+  <script type="application/javascript">
+    $(document).ready(function() {
+      $("#date-popover").popover({
+        html: true,
+        trigger: "manual"
+      });
+      $("#date-popover").hide();
+      $("#date-popover").click(function(e) {
+        $(this).hide();
+      });
+
+      $("#my-calendar").zabuto_calendar({
+        action: function() {
+          return myDateFunction(this.id, false);
+        },
+        action_nav: function() {
+          return myNavFunction(this.id);
+        },
+        ajax: {
+          url: "show_data.php?action=1",
+          modal: true
+        },
+        legend: [{
+          type: "text",
+          label: "Special event",
+          badge: "00"
+        },
+        {
+          type: "block",
+          label: "Regular event",
+        }
+        ]
+      });
+    });
+
+    function myNavFunction(id) {
+      $("#date-popover").hide();
+      var nav = $("#" + id).data("navigation");
+      var to = $("#" + id).data("to");
+      console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+    }
+  </script>
+
+
 </body>
+
 </html>

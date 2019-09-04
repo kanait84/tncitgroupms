@@ -65,7 +65,7 @@ Route::get('/management', 'ManagementController@management')
 ->name('management');
 
 Route::get('/mviewdepartment/{d_id}', 'ManagementController@mViewSubdepartment')
-->middleware('is_management')
+->middleware('is_management', 'admin')
 ->name('mviewdepartment');
 
 Route::get('mviewemployee/{id}', 'ManagementController@mviewEmployee')
@@ -134,4 +134,18 @@ Route::get('listmissreports/{u_id}/{r_date}', 'TopManagementController@listmissr
 Route::get('mgreportcmt/{n_id}/{u_id}/{r_date}', 'ManagementController@mgreportcmt')->name('mgreportcmt');
 Route::get('empreportcmt/{n_id}/{r_date}', 'ManagementController@empreportcmt')->name('empreportcmt');
 
+Route::get('allreports', 'AdminController@allReports')
+    ->middleware('admin')
+    ->name('allreports');
 
+Route::get('/adminviewdepartment/{d_id}', 'AdminController@viewDepartment')
+    ->middleware('admin')
+    ->name('adminviewdepartment');
+
+Route::get('adminviewsubdepartment/{id}', 'AdminController@viewSubdepartment')
+    ->middleware('admin')
+    ->name('adminviewsubdepartment');
+
+Route::get('adminviewemployee/{id}', 'AdminController@viewEmployee')
+    ->middleware('admin')
+    ->name('adminviewemployee');

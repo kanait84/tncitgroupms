@@ -28,10 +28,10 @@ class SubmanagementController extends Controller
         $ulist = array();
         foreach($users as $k=>$v){  $ulist[] = $v->id; }
         if (is_array($ulist) && count($ulist)>1){ $alluid = implode(',',$ulist); } else { $alluid = $ulist[0]; }
-        $reports = Report::whereIn('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $reports = Report::orWhereRaw('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
 
         $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
-            ->whereIn('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
+            ->orWhereRaw('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
 
         return view('submanagement.sm_stafflist', compact('users', 'reports', 'usercount', 'todayreportcnt', 'seldate'));
     }
