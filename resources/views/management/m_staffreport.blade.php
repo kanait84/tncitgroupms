@@ -102,7 +102,7 @@ foreach($diff_result as $k=>$v){
               <div class="profile-pic">
 
                 <p>
-                  <img src="/photo_storage/{{$user->email}}.png" class="img-circle"></p>
+                  <img src="/photo_storage/{{$user->emp_photo}}" class="img-circle"></p>
                   <p>
                   </p>
                 </div>

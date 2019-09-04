@@ -125,7 +125,7 @@
                             <p>
                                 <muted>{{$counttime}}</muted>
                                 <br/>
-                                <a href="/viewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
+                                <a href="/mviewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
                             </p>
                         </div>
                     </div>
