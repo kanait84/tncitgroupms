@@ -45,21 +45,31 @@
                             </thead>
                             <tbody>
                             @forelse($listusers as $user)
-                            <tr class="gradeA">
-                                <td>{{isset($user->name) ? $user->name : ''}}</td>
-                                <td>{{isset($user->email) ? $user->email : ''}}</td>
-                                <td>{{isset($user->department->d_title) ? $user->department->d_title : ''}}</td>
-                                <td>{{isset($user->subdepartment->sd_title) ? $user->subdepartment->sd_title : ''}}</td>
-                                @if($getweek!='')
-                                    <td align="center"><a href="listmissreports/{{$user->id."/".$lweek}}">
-                                            @if($user->missdates>0)
-                                            {{$user->missdates}}
-                                                @else
-                                            {{0}}
+
+                                @if($user->missdates>0 && isset($_GET['dweek']))
+                                        <tr class="gradeA">
+                                            <td>{{isset($user->name) ? $user->name : ''}}</td>
+                                            <td>{{isset($user->email) ? $user->email : ''}}</td>
+                                            <td>{{isset($user->department->d_title) ? $user->department->d_title : ''}}</td>
+                                            <td>{{isset($user->subdepartment->sd_title) ? $user->subdepartment->sd_title : ''}}</td>
+                                            @if($getweek!='')
+                                                <td align="center"><a href="listmissreports/{{$user->id."/".$lweek}}">
+                                                        @if($user->missdates>0)
+                                                        {{$user->missdates}}
+                                                            @else
+                                                        {{0}}
+                                                        @endif
+                                                    </a></td>
                                             @endif
-                                        </a></td>
+                                        </tr>
+                                    @elseif(isset($_GET['d']))
+                                    <tr class="gradeA">
+                                        <td>{{isset($user->name) ? $user->name : ''}}</td>
+                                        <td>{{isset($user->email) ? $user->email : ''}}</td>
+                                        <td>{{isset($user->department->d_title) ? $user->department->d_title : ''}}</td>
+                                        <td>{{isset($user->subdepartment->sd_title) ? $user->subdepartment->sd_title : ''}}</td>
+                                    </tr>
                                 @endif
-                            </tr>
                             @empty
                                 <tr class="gradeX">
                                     @if($getweek!='')
@@ -178,7 +188,7 @@
         &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
       </p>
 
-      <a href="profile.html#" class="go-top">
+      <a href="#" class="go-top">
         <i class="fa fa-angle-up"></i>
       </a>
     </div>

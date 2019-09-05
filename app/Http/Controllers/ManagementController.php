@@ -114,7 +114,6 @@ class ManagementController extends Controller
             $ruser = User::find($report->u_id);
             $ruser->notify(new ReportComment($user->name, $report->date, $ruser->id, $report->r_id));
         }
-
         $i=0;
         $user_details = $commentArr = array();
         $commentArr = $report->comments;

@@ -126,7 +126,7 @@
                         <p>
                             <muted>{{$counttime}}</muted>
                             <br/>
-                            <a href="/viewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
+                            <a href="/adminviewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
                         </p>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
 			&copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
 		</p>
 
-		<a href="profile.html#" class="go-top">
+		<a href="#" class="go-top">
 			<i class="fa fa-angle-up"></i>
 		</a>
 	</div>

@@ -145,7 +145,7 @@
                         <p>
                             <muted>{{$counttime}}</muted>
                             <br/>
-                            <a href="/viewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
+                            <a href="/adminviewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
                         </p>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
 				&copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
 			</p>
 
-			<a href="profile.html#" class="go-top">
+			<a href="#" class="go-top">
 				<i class="fa fa-angle-up"></i>
 			</a>
 		</div>
@@ -187,33 +187,6 @@
 <!--script for this page-->
 <script src="{{ asset('asset/lib/sparkline-chart.js') }}"></script>
 <script src="{{ asset('asset/lib/zabuto_calendar.js') }}"></script>
-
-<!--script for this page-->
-<!-- MAP SCRIPT - ALL CONFIGURATION IS PLACED HERE - VIEW OUR DOCUMENTATION FOR FURTHER INFORMATION -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false"></script>
-<script>
-	$('.contact-map').click(function() {
-
-      //google map in tab click initialize
-      function initialize() {
-      	var myLatlng = new google.maps.LatLng(40.6700, -73.9400);
-      	var mapOptions = {
-      		zoom: 11,
-      		scrollwheel: false,
-      		center: myLatlng,
-      		mapTypeId: google.maps.MapTypeId.ROADMAP
-      	}
-      	var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-      	var marker = new google.maps.Marker({
-      		position: myLatlng,
-      		map: map,
-      		title: 'Dashio Admin Theme!'
-      	});
-      }
-      google.maps.event.addDomListener(window, 'click', initialize);
-  });
-</script>
-
 <script type="application/javascript">
 	$(document).ready(function() {
 		$("#date-popover").popover({

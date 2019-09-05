@@ -231,7 +231,7 @@ $val = date('Y-m-d', strtotime($v)); ?>
             &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
           </p>
 
-          <a href="profile.html#" class="go-top">
+          <a href="#" class="go-top">
             <i class="fa fa-angle-up"></i>
           </a>
         </div>

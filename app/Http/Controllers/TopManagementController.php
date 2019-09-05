@@ -155,7 +155,7 @@ class TopManagementController extends Controller
         $lmonth = date("Y-m-d", strtotime('-1 month', time()));
 
             if(isset($request->d)){
-                $cdate = date('Y-m-d', strtotime($request->d));
+                $cdate = $request->d;
                 //Convert the date string into a unix timestamp.
                 $unixTimestamp = strtotime($cdate);
                 $filterdate = $request->d;
@@ -165,7 +165,7 @@ class TopManagementController extends Controller
                     $reports = $listusers = array();
                 } else {
                     $reports = DB::table('reports')->select('u_id')
-                        ->where('date', $cdate)
+                        ->whereRaw("date='".$cdate."'")
                         ->whereRaw("DAYNAME(date) NOT IN ('Saturday', 'Friday')")
                         ->orderBy('date', 'DESC')->get();
                     foreach($reports as $k=>$v){ $uid_Arr[] = $v->u_id; }
@@ -177,8 +177,10 @@ class TopManagementController extends Controller
                         $allusers = User::whereRaw("id!= $users->id")->get();
                     }
                     foreach($allusers as $k=>$v){ $alluid_Arr[] = $v->id; }
+                   // echo "<pre>";print_r($alluid_Arr); die;
                     $filteredusers = array_values(array_diff($alluid_Arr, $uid_Arr));
-                    $listusers = User::Wherein('id', $filteredusers)->whereRaw("id!= $users->id")->with('department', 'subdepartment')->get();
+                    $listusers = User::WhereIn('id', $filteredusers)->whereRaw("id!= $users->id")
+                        ->with('department', 'subdepartment')->get();
                 }
                 return view('topmanagement.missedreport', compact('reports', 'users', 'departments',
                     'usercount', 'todayreportcnt', 'recentreports','seldate', 'listusers', 'filterdate',

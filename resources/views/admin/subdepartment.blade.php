@@ -57,7 +57,7 @@
 					&copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
 				</p>
 
-				<a href="profile.html#" class="go-top">
+				<a href="#" class="go-top">
 					<i class="fa fa-angle-up"></i>
 				</a>
 			</div>
@@ -73,41 +73,11 @@
 
 	<script type="text/javascript" language="javascript" src="asset/lib/advanced-datatable/js/jquery.js"></script>
 
-
 	<script type="text/javascript" language="javascript" src="asset/lib/advanced-datatable/js/jquery.dataTables.js"></script>
 	<script type="text/javascript" src="asset/lib/advanced-datatable/js/DT_bootstrap.js"></script>
 	<!--common script for all pages-->
-
-
-
-	<!--common script for all pages-->
 	<script src="lib/common-scripts.js"></script>
 	<!--script for this page-->
-	<!-- MAP SCRIPT - ALL CONFIGURATION IS PLACED HERE - VIEW OUR DOCUMENTATION FOR FURTHER INFORMATION -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false"></script>
-	<script>
-		$('.contact-map').click(function() {
-
-      //google map in tab click initialize
-      function initialize() {
-      	var myLatlng = new google.maps.LatLng(40.6700, -73.9400);
-      	var mapOptions = {
-      		zoom: 11,
-      		scrollwheel: false,
-      		center: myLatlng,
-      		mapTypeId: google.maps.MapTypeId.ROADMAP
-      	}
-      	var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-      	var marker = new google.maps.Marker({
-      		position: myLatlng,
-      		map: map,
-      		title: 'Dashio Admin Theme!'
-      	});
-      }
-      google.maps.event.addDomListener(window, 'click', initialize);
-  });
-</script>
-
 <script type="text/javascript">
 	/* Formating function for row details */
 	function fnFormatDetails(oTable, nTr) {
