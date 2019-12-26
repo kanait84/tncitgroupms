@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -22,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'mobile', 'd_id', 'sd_id', 'position', 'emp_photo', 'file_type', 'type',
+        'name', 'email', 'password', 'mobile', 'd_id', 'sd_id', 'position', 'emp_photo', 'emp_sign', 'file_type', 'type',
     ];
 
 
@@ -101,10 +102,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Subdepartment', 'sd_id', 'sd_id');
     }
 
-      public function manager_departments()
+    public function manager_departments()
     {
         return $this->hasMany('App\Department', 'd_id', 'd_id');
     }
-
 
 }

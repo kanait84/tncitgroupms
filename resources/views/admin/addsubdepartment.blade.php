@@ -80,7 +80,7 @@
 								<div class="form-group">
 								</div>
 
-								
+
 
 
 								<button type="submit" class="btn btn-theme">Submit</button>
@@ -101,34 +101,34 @@
 
 
 
-	<script src="asset/lib/jquery/jquery.min.js"></script>
-	<script src="asset/lib/bootstrap/js/bootstrap.min.js"></script>
-	<script class="include" type="text/javascript" src="asset/lib/jquery.dcjqaccordion.2.7.js"></script>
-	<script src="asset/lib/jquery.scrollTo.min.js"></script>
-	<script src="asset/lib/jquery.nicescroll.js" type="text/javascript"></script>
+	<script src="/asset/lib/jquery/jquery.min.js"></script>
+	<script src="/asset/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script class="include" type="text/javascript" src="/asset/lib/jquery.dcjqaccordion.2.7.js"></script>
+	<script src="/asset/lib/jquery.scrollTo.min.js"></script>
+	<script src="/asset/lib/jquery.nicescroll.js" type="text/javascript"></script>
 	<!--common script for all pages-->
-	<script src="asset/lib/common-scripts.js"></script>
+	<script src="/asset/lib/common-scripts.js"></script>
 	<!--script for this page-->
-	<script src="asset/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="/asset/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<!--custom switch-->
-	<script src="asset/lib/bootstrap-switch.js"></script>
+	<script src="/asset/lib/bootstrap-switch.js"></script>
 	<!--custom tagsinput-->
-	<script src="asset/lib/jquery.tagsinput.js"></script>
+	<script src="/asset/lib/jquery.tagsinput.js"></script>
 	<!--custom checkbox & radio-->
-	<script type="text/javascript" src="asset/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/date.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
-	<script src="asset/lib/form-component.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/date.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+	<script src="/asset/lib/form-component.js"></script>
 
 
 
-	<script type="text/javascript" src="asset/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/moment.min.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-	<script src="asset/lib/advanced-form-components.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script src="/asset/lib/advanced-form-components.js"></script>
 
 
 

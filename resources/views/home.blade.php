@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,10 +146,10 @@ foreach($diff_result as $k=>$v){
                               <span class="right-button">
                                   <a href="editrequest/{{$report->u_id."/".$report->r_id."/".$report->date}}"
                                        class="btn btn-primary btn-xs">Edit Request</a></span>
-                          @else
+                          {{--@else
                               <span class="right-button">
                                   <a href="report/{{$report->r_id}}"
-                                       class="btn btn-primary btn-xs">Edit</a></span>
+                                       class="btn btn-primary btn-xs">Edit</a></span>--}}
                           @endif
                       </h5>
                     </div>
@@ -188,7 +187,7 @@ foreach($diff_result as $k=>$v){
                           <div id='response'></div>
                           <div id='all_posts'>
                             <?php
-                            $user_details = array_reverse($user_details);
+                            $user_details = isset($user_details) ? array_reverse($user_details) : array();
                             if(is_array($user_details) && count($user_details)>0)
                             {
                               $user_details = array_reverse($user_details);
@@ -279,7 +278,44 @@ foreach($diff_result as $k=>$v){
                 <!-- /col-md-8  -->
               </div>
               @empty
-              No Reports
+                <div class="row">
+                <div class="col-md-12">
+                <div class="message-p pn">
+                <div class="message-header">
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @endif
+
+                    @if ($message = Session::get('warning'))
+                        <div class="alert alert-warning alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @endif
+
+                    @if ($message = Session::get('error'))
+                        <div class="alert alert-danger alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @endif
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <p class="text-center">No Reports</p>
+                    </div>
+                </div>
+
+                </div>
+                <!-- /Message Panel-->
+                </div>
+                <!-- /col-md-8  -->
+                </div>
               @endforelse
             </div>
             <!-- /col-lg-9 END SECTION MIDDLE -->
@@ -291,9 +327,9 @@ foreach($diff_result as $k=>$v){
               <div id="calendar" class="mb" style="margin-top: 20px;">
                 <div class="panel green-panel no-margin">
                   <div class="panel-body">
-                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
+                    <div id="date-popover" class="popover top" style="cursor: pointer; display: block; margin-left: 33%; margin-top: -50px; width: 175px;">
                       <div class="arrow"></div>
-                      <h3 class="popover-title" style="disadding: none;"></h3>
+                      <h3 class="popover-title" style="display: none;"></h3>
                       <div id="date-popover-content" class="popover-content"></div>
                     </div>
                     <div id="my-calendar"></div>
@@ -309,7 +345,7 @@ foreach($diff_result as $k=>$v){
       </section>
       <!--main content end-->
       <!--footer start-->
-      <footer class="site-footer">
+      <footer class="site-footer" style="margin-top: 80px;">
         <div class="text-center">
           <p>
             &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
@@ -385,7 +421,7 @@ foreach($diff_result as $k=>$v){
         console.log('Triggered',myString)
       }
     </script>
-  <script type="text/javascript">
+  {{--<script type="text/javascript">
       $(document).ready(function () {
           //Disable cut copy paste
           $('body').bind('cut copy paste', function (e) {
@@ -397,7 +433,7 @@ foreach($diff_result as $k=>$v){
               return false;
           });
       });
-  </script>
+  </script>--}}
   </body>
 
   </html>

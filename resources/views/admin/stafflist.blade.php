@@ -18,32 +18,32 @@
         <div class="col-lg-9 ds" style="">
 
           @foreach($users as $user)
-          <a href="{{ url('adminviewemployee')."/".$user->id}}"><div class="col-md-4 col-sm-4 mb" style="margin-top: 20px;">
-            <div class="darkblue-panel pn">
-              <div class="darkblue-header" style="padding-top: 15px;">
-                    <img src="/photo_storage/{{$user->email}}.png" class="img-circle" height="80px"></p>
+                  <a href="{{ url('adminviewemployee')."/".$user->id}}"><div class="col-md-4 col-sm-4 mb" style="margin-top: 20px;">
+                    <div class="darkblue-panel pn">
+                      <div class="darkblue-header" style="padding-top: 15px;">
+                            <img src="/photo_storage/{{$user->email}}.png" class="img-circle" height="80px"></p>
 
-                <h5>{{$user->name}}</h5>
-                <h5>{{$user->position}}</h5>
+                        <h5>{{$user->name}}</h5>
+                        <h5>{{$user->position}}</h5>
 
-              </div>
-              <canvas id="serverstatus02" height="10" width="120"></canvas>
-              <canvas id="serverstatus02" height="10" width="120"></canvas>
-          <!--    <h1>10</h1>
-            <p>No. of Employee</p> -->
+                      </div>
+                      <canvas id="serverstatus02" height="10" width="120"></canvas>
+                      <canvas id="serverstatus02" height="10" width="120"></canvas>
+                  <!--    <h1>10</h1>
+                    <p>No. of Employee</p> -->
 
-            <button class="btn btn-xs btn-block" style="padding: 5px;">View Report</button>
-            <footer style="background-color: blue">
-              <div class="pull-left">
-                <!-- <h5><i class="fa fa-hdd-o"></i> </h5> -->
-              </div>
-              <div class="pull-right">
-                <h5></h5>
-              </div>
-            </footer>
-          </div>
-          <!--  /darkblue panel -->
-        </div></a>
+                    <button class="btn btn-xs btn-block" style="padding: 5px;">View Report</button>
+                    <footer style="background-color: blue">
+                      <div class="pull-left">
+                        <!-- <h5><i class="fa fa-hdd-o"></i> </h5> -->
+                      </div>
+                      <div class="pull-right">
+                        <h5></h5>
+                      </div>
+                    </footer>
+                  </div>
+                  <!--  /darkblue panel -->
+                </div></a>
         @endforeach
       </div>
       <div class="col-lg-3 ds">

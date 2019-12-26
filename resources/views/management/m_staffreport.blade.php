@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,7 +99,6 @@ foreach($diff_result as $k=>$v){
           <div class="row content-panel">
             <div class="col-md-2 centered">
               <div class="profile-pic">
-
                 <p>
                   <img src="/photo_storage/{{$user->emp_photo}}" class="img-circle"></p>
                   <p>
@@ -121,7 +119,9 @@ foreach($diff_result as $k=>$v){
                 </div>
               </div>
             </div>
+      </div>
 
+        <div class="row">
             <div class="col-lg-8 main-chart">
               @forelse($reports as $report)
               <div class="row">
@@ -136,11 +136,11 @@ foreach($diff_result as $k=>$v){
                           <name>{{$report->description}}</name>
                         </p>
                         @if($report->attachment != "")
-                        <p>Attachment: <a href="../report_attachment/{{$report->date}}-{{$user->id}}.{{$report->file_type}}" target="_blank" type="button" class="btn btn-primary btn-xs">Download</a>
+                        <p>Attachment: <a href="../report_attachment/{{$report->date}}-{{$user->id}}.{{$report->file_type}}"
+                                          target="_blank" type="button" class="btn btn-primary btn-xs">Download</a> </p>
                           @else
                           <p>No Attachment</p>
                           @endif
-                        </p>
                       </div>
                     </div>
 
@@ -277,12 +277,46 @@ foreach($diff_result as $k=>$v){
                   </div>
                   <!-- /col-md-8  -->
                 </div>
-
                 @empty
-                    <hr />
-                    <div align="center"><p>No Activities</p></div>
-                @endforelse
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="message-p pn">
+                                <div class="message-header">
+                                    @if ($message = Session::get('success'))
+                                        <div class="alert alert-success alert-block">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @endif
 
+                                    @if ($message = Session::get('warning'))
+                                        <div class="alert alert-warning alert-block">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @endif
+
+                                    @if ($message = Session::get('error'))
+                                        <div class="alert alert-danger alert-block">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @endif
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <p class="text-center">No Reports</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /Message Panel-->
+                        </div>
+                        <!-- /col-md-8  -->
+                    </div>
+                @endforelse
               </div>
               <!-- /col-lg-9 END SECTION MIDDLE -->
         <!-- **********************************************************************************************************************************************************
@@ -311,7 +345,7 @@ foreach($diff_result as $k=>$v){
       </section>
       <!--main content end-->
       <!--footer start-->
-      <footer class="site-footer">
+      <footer class="site-footer" style="margin-top: 80px;">
         <div class="text-center">
           <p>
             &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved

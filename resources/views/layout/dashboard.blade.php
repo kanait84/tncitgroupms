@@ -61,7 +61,81 @@
                                     <span style="white-space: pre-line">{{$notification->data['data']}}</span>
                                 </a></li>
                         @endif
+
+                    @elseif($notification->type=="App\Notifications\OverTimeRequest")
+                        @if(auth()->user()->type == 'management')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("mgrotapproval/".$notification->id."/".$notification->data['u_id']."/".$notification->data['reportdate']."/".$notification->data['mgr_id']."/".$notification->data['report_uid'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtAfterMgrApprove")
+                        @if(auth()->user()->type == 'topmanagement')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("topmgmtapproval/".$notification->id."/".$notification->data['u_id']."/".$notification->data['otdate'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtAfterTopMgtApprove")
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("otapproved/".$notification->id)}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtAfterMgrDisApprove")
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("otrejected/".$notification->id)}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtAfterTopMgtDisApprove")
+                        @if(auth()->user()->type == 'topmanagement')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("otrejected/".$notification->id)}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtHRRequest")
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("otempRequest/".$notification->id."/".$notification->data['u_id']."/".$notification->data['otdate']."/".$notification->data['report_uid'])}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtHRApprove")
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("otHRApproved/".$notification->id)}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
+                    @elseif($notification->type=="App\Notifications\OtHRReject")
+                        @if(auth()->user()->type == 'employee')
+                            <li style="background-color: lightgrey">
+                                <a href="{{ url("otHRDisapproved/".$notification->id)}}">
+                                    <span class="label label-danger"><i class="fa fa-bolt"></i></span>
+                                    <span style="white-space: pre-line">{{$notification->data['data']}}</span>
+                                </a></li>
+                        @endif
+
                     @endif
+
                 @endforeach
         </ul>
     </li>

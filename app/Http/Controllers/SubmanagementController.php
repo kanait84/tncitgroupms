@@ -29,11 +29,12 @@ class SubmanagementController extends Controller
         foreach($users as $k=>$v){  $ulist[] = $v->id; }
         if (is_array($ulist) && count($ulist)>1){ $alluid = implode(',',$ulist); } else { $alluid = $ulist[0]; }
         $reports = Report::orWhereRaw('u_id', array($alluid))->with('user')->orderBy('created_at', 'DESC')->take(4)->get();
-
         $todayreportcnt = DB::table('reports')->select(DB::raw('*'))
             ->orWhereRaw('u_id', array($alluid))->whereRaw('Date(created_at) = CURDATE()')->count();
+        $allreports = Report::WhereIn('u_id', array($alluid))->with('user', 'comments')->orderBy('date', 'DESC')->get();
 
-        return view('submanagement.sm_stafflist', compact('users', 'reports', 'usercount', 'todayreportcnt', 'seldate'));
+        return view('submanagement.sm_stafflist', compact('users', 'reports', 'usercount',
+            'todayreportcnt', 'seldate', 'allreports'));
     }
 
 
@@ -67,7 +68,6 @@ class SubmanagementController extends Controller
         $allreports = Report::where('u_id', $id)->with('user', 'comments')->orderBy('date', 'DESC')->get();
         return view('submanagement.sm_staffreport', compact('reports', 'user', 'user_details', 'uid',
             'currcomments', 'seldate', 'allreports'));
-
     }
 
 

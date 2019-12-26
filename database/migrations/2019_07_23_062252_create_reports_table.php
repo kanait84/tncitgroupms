@@ -21,7 +21,6 @@ class CreateReportsTable extends Migration
             $table->string('description', 250);
             $table->string('attachment',100)->nullable();
             $table->string('file_type',50)->nullable();
-
             $table->rememberToken();
             $table->timestamps();
         });

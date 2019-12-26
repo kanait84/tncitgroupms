@@ -68,122 +68,148 @@ $val = date('Y-m-d', strtotime($v)); ?>
 <?php
 } } ?>
 
-  <section id="container">
-    @include('layout.dashboard')
-    @include('layout.sidenav')
-    <section id="main-content">
-      <section class="wrapper">
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="row content-panel">
-                      <div class="col-md-2 centered">
-                          <div class="profile-pic">
-                              <p>
-                                  <img src="/photo_storage/{{Auth::user()->emp_photo}}" class="img-circle"></p>
-                              <p>
-                              </p>
-                          </div>
-                      </div>
-                      <div class="col-md-4 profile-text">
-                          <h3>{{Auth::user()->name}}</h3>
-                          <h6>{{Auth::user()->position}}</h6>
-                          <p>{{Auth::user()->email}} || {{Auth::user()->mobile}} </p>
-                      </div>
-                      <div class="col-md-4 profile-text" style="margin-top: 35px ">
-                          <p>  <a class="btn btn-theme" href="{{ url('submitreport') }}"><i class="fa fa-upload"></i>
-                                  Submit Daily Report</a></p>
+<section id="container">
+@include('layout.dashboard')
+@include('layout.sidenav')
+<section id="main-content">
+<section class="wrapper">
+    <div class="row">
+          <div class="col-lg-12">
+              <div class="row content-panel">
+                  <div class="col-md-2 centered">
+                      <div class="profile-pic">
+                          <p>
+                              <img src="/photo_storage/{{Auth::user()->emp_photo}}" class="img-circle"></p>
+                          <p>
+                          </p>
                       </div>
                   </div>
+                  <div class="col-md-4 profile-text">
+                      <h3>{{Auth::user()->name}}</h3>
+                      <h6>{{Auth::user()->position}}</h6>
+                      <p>{{Auth::user()->email}} || {{Auth::user()->mobile}} </p>
+                  </div>
+                  <div class="col-md-4 profile-text" style="margin-top: 35px ">
+                      <p>  <a class="btn btn-theme" href="{{ url('submitreport') }}"><i class="fa fa-upload"></i>
+                              Submit Daily Report</a></p>
+                  </div>
               </div>
+          </div>
 
-        <div class="col-lg-8 main-chart" style="padding: 50px;">
-                <form method="POST" action="/profile/update" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+<div class="col-lg-8 main-chart" style="padding: 50px;">
+    <form method="POST" action="/profile/update" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group row">
+            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
-                        <div class="col-md-6">
-                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autocomplete="name" autofocus>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}"  disabled>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('Mobile No.') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="mobile" type="number" class="form-control @error('mobile') is-invalid @enderror" name="mobile" value="{{ $user->mobile }}" required autocomplete="mobile">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="emp_photo" class="col-md-4 col-form-label text-md-right">{{ __('Photo') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="emp_photo" type="file" name="emp_photo" class="form-control @error('emp_photo') is-invalid @enderror"  value="{{$user->emp_photo}}"  accept = 'image/jpeg , image/jpg, image/gif, image/png' >
-                            <div class="darkblue-header" style="padding-top: 15px;">
-                                <img src="/photo_storage/{{$user->emp_photo}}" id="emp_photo-tag" width="200px" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Update') }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-
-
-      </div>
-      <div class="col-lg-4">
-        <!--COMPLETED ACTIONS DONUTS CHART-->
-        <div id="calendar" class="mb" style="margin-top: 20px;">
-          <div class="panel green-panel no-margin">
-            <div class="panel-body">
-              <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
-                <div class="arrow"></div>
-                <h3 class="popover-title" style="disadding: none;"></h3>
-                <div id="date-popover-content" class="popover-content"></div>
-              </div>
-              <div id="my-calendar"></div>
+            <div class="col-md-6">
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autocomplete="name" autofocus>
             </div>
-          </div>
         </div>
-          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-      <script type="text/javascript">
-          function readURL(input) {
-              if (input.files && input.files[0]) {
-                  var reader = new FileReader();
 
-                  reader.onload = function (e) {
-                      $('#emp_photo-tag').attr('src', e.target.result);
-                  }
-                  reader.readAsDataURL(input.files[0]);
-              }
-          }
-          $("#emp_photo").change(function(){
-              readURL(this);
-          });
-      </script>
+        <div class="form-group row">
+            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-        <!-- CALENDAR-->
-        <!-- / calendar -->
-      </div>
+            <div class="col-md-6">
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}"  disabled>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('Mobile No.') }}</label>
+
+            <div class="col-md-6">
+                <input id="mobile" type="number" class="form-control @error('mobile') is-invalid @enderror" name="mobile" value="{{ $user->mobile }}" required autocomplete="mobile">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="emp_photo" class="col-md-4 col-form-label text-md-right">{{ __('Photo') }}</label>
+
+            <div class="col-md-6">
+                <input id="emp_photo" type="file" name="emp_photo" class="form-control @error('emp_photo') is-invalid @enderror"
+                       value="{{$user->emp_photo}}"  accept = 'image/jpeg , image/jpg, image/gif, image/png' >
+                <div class="darkblue-header" style="padding-top: 15px;">
+                    <img src="/photo_storage/{{$user->emp_photo}}" id="emp_photo-tag" width="150" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="emp_sign" class="col-md-4 col-form-label text-md-right">{{ __('Signature') }}</label>
+
+            <div class="col-md-6">
+                <input id="emp_sign" type="file" name="emp_sign" class="form-control @error('emp_sign') is-invalid @enderror"
+                       value="{{$user->emp_sign}}" accept = 'image/jpeg, image/jpg, image/gif, image/png' >
+                <div class="darkblue-header" style="padding-top: 15px;">
+                    <img src="/emp_sign/{{$user->emp_sign}}" id="emp_sign-tag" width="150" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row mb-0">
+            <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Update') }}
+                </button>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>
+<div class="col-lg-4">
+    <!--COMPLETED ACTIONS DONUTS CHART-->
+    <div id="calendar" class="mb" style="margin-top: 20px;">
+      <div class="panel green-panel no-margin">
+        <div class="panel-body">
+          <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
+            <div class="arrow"></div>
+            <h3 class="popover-title" style="disadding: none;"></h3>
+            <div id="date-popover-content" class="popover-content"></div>
           </div>
-    </section>
+          <div id="my-calendar"></div>
+        </div>
+      </div>
+    </div>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script type="text/javascript">
+      function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
 
-  </section>
+              reader.onload = function (e) {
+                  $('#emp_photo-tag').attr('src', e.target.result);
+              }
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+      $("#emp_photo").change(function(){
+          readURL(this);
+      });
+
+      function signreadURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#emp_sign-tag').attr('src', e.target.result);
+              }
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+      $("#emp_sign").change(function(){
+          signreadURL(this);
+      });
+  </script>
+
+    <!-- CALENDAR-->
+    <!-- / calendar -->
+  </div>
+      </div>
+</section>
+</section>
 
   <footer class="site-footer">
     <div class="text-center">

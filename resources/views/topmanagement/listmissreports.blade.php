@@ -20,7 +20,29 @@
     @include('layout.sidenav')
     <section id="main-content">
       <section class="wrapper site-min-height">
-        <div class="col-lg-8 main-chart">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="row content-panel">
+                      <div class="col-md-2 centered">
+                          <div class="profile-pic">
+                              <p><img src="/photo_storage/{{Auth::user()->emp_photo}}" class="img-circle"></p>
+                              <p>&nbsp;</p>
+                          </div>
+                      </div>
+                      <div class="col-md-4 profile-text">
+                          <h3>{{Auth::user()->name}}</h3>
+                          <h6>{{Auth::user()->position}}</h6>
+                          <p>{{Auth::user()->email}} || {{Auth::user()->mobile}} </p>
+                      </div>
+                      <div class="col-md-4 profile-text" style="margin-top: 35px ">
+                          <p>  <a class="btn btn-theme" href="{{ url('submitreport') }}"><i class="fa fa-upload"></i>
+                                  Submit Daily Report</a></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 main-chart">
 
             <h3> Missed Report Dates - {{$misseduser}} (Last {{$datediff}} Days)</h3>
                 <!-- page start-->
@@ -47,101 +69,98 @@
                             </tbody>
                         </table>
                     </div>
+                </div><!-- page end-->
 
-                <!-- page end-->
-            </div>
-            <!-- /row -->
-
-      </div>
-      <div class="col-lg-4 ds">
-        <!--COMPLETED ACTIONS DONUTS CHART-->
-        <div id="calendar" class="mb" style="margin-top: 20px;">
-          <div class="panel green-panel no-margin">
-            <div class="panel-body">
-              <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
-                <div class="arrow"></div>
-                <h3 class="popover-title" style="disadding: none;"></h3>
-                <div id="date-popover-content" class="popover-content"></div>
-              </div>
-                <div id="my-calendar"></div>
-            </div>
           </div>
-        </div>
-
-
-        <div class="donut-main">
-          <h4>COMPLETED ACTIONS & PROGRESS</h4>
-          <canvas id="newchart" height="130" width="130"></canvas>
-          <script>
-            var doughnutData = [{
-              value: 70,
-              color: "#4ECDC4"
-            },
-            {
-              value: 30,
-              color: "#fdfdfd"
-            }
-            ];
-            var myDoughnut = new Chart(document.getElementById("newchart").getContext("2d")).Doughnut(doughnutData);
-          </script>
-        </div>
-        <!--NEW EARNING STATS -->
-        <div class="panel terques-chart">
-          <div class="panel-body">
-            <div class="chart">
-              <div class="centered">
-                <span>TODAY REPORTS</span>
-                <strong>{{$todayreportcnt}} | {{$usercount}}</strong>
+            <div class="col-lg-4 ds">
+            <!--COMPLETED ACTIONS DONUTS CHART-->
+            <div id="calendar" class="mb" style="margin-top: 20px;">
+              <div class="panel green-panel no-margin">
+                <div class="panel-body">
+                  <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
+                    <div class="arrow"></div>
+                    <h3 class="popover-title" style="disadding: none;"></h3>
+                    <div id="date-popover-content" class="popover-content"></div>
+                  </div>
+                    <div id="my-calendar"></div>
+                </div>
               </div>
-              <br>
             </div>
-          </div>
-        </div>
-        <!--new earning end-->
-        <!-- RECENT ACTIVITIES SECTION -->
-        <h4 class="centered mt">RECENT ACTIVITY</h4>
-          @foreach($recentreports as $report)
-              <?php
-              $currtime = date('Y-m-d H:i:s');
-              $to_time = strtotime($currtime);
-              $from_time = strtotime($report->created_at);
-              $minutes = round(abs($to_time - $from_time) / 60);
-              $hours = round(abs($to_time - $from_time) / 3600);
-              $hourspel = isset($hours) && ($hours>1) ? 'Hours' : 'Hour';
-              $date1 = new DateTime('now');
-              $date2 = new DateTime($report->created_at);
-              $interval = date_diff($date1, $date2);
-              $daycount = $interval->format('%a');
-              $counttime = '';
-              if($minutes==0){
-                  $counttime = "Just Now";
-              } elseif($minutes<60 && $daycount==0) {
-                  $counttime = $minutes." Minutes Ago";
-              } elseif($minutes>60 && $daycount==0) {
-                  $counttime = $hours." ".$hourspel." Ago";
-              } elseif($daycount>0){
-                  $counttime = $daycount." Days Ago";
-              } ?>
 
-              <div class="desc">
-                  <div class="thumb">
-                      <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
+
+            <div class="donut-main">
+              <h4>COMPLETED ACTIONS & PROGRESS</h4>
+              <canvas id="newchart" height="130" width="130"></canvas>
+              <script>
+                var doughnutData = [{
+                  value: 70,
+                  color: "#4ECDC4"
+                },
+                {
+                  value: 30,
+                  color: "#fdfdfd"
+                }
+                ];
+                var myDoughnut = new Chart(document.getElementById("newchart").getContext("2d")).Doughnut(doughnutData);
+              </script>
+            </div>
+            <!--NEW EARNING STATS -->
+            <div class="panel terques-chart">
+              <div class="panel-body">
+                <div class="chart">
+                  <div class="centered">
+                    <span>TODAY REPORTS</span>
+                    <strong>{{$todayreportcnt}} | {{$usercount}}</strong>
                   </div>
-                  <div class="details">
-                      <p>
-                          <muted>{{$counttime}}</muted>
-                          <br/>
-                          <a href="/viewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
-                      </p>
-                  </div>
+                  <br>
+                </div>
               </div>
-      @endforeach
-        <!-- USERS ONLINE SECTION -->
-        <!-- CALENDAR-->
-        <!-- / calendar -->
-      </div>
+            </div>
+            <!--new earning end-->
+            <!-- RECENT ACTIVITIES SECTION -->
+            <h4 class="centered mt">RECENT ACTIVITY</h4>
+              @foreach($recentreports as $report)
+                  <?php
+                  $currtime = date('Y-m-d H:i:s');
+                  $to_time = strtotime($currtime);
+                  $from_time = strtotime($report->created_at);
+                  $minutes = round(abs($to_time - $from_time) / 60);
+                  $hours = round(abs($to_time - $from_time) / 3600);
+                  $hourspel = isset($hours) && ($hours>1) ? 'Hours' : 'Hour';
+                  $date1 = new DateTime('now');
+                  $date2 = new DateTime($report->created_at);
+                  $interval = date_diff($date1, $date2);
+                  $daycount = $interval->format('%a');
+                  $counttime = '';
+                  if($minutes==0){
+                      $counttime = "Just Now";
+                  } elseif($minutes<60 && $daycount==0) {
+                      $counttime = $minutes." Minutes Ago";
+                  } elseif($minutes>60 && $daycount==0) {
+                      $counttime = $hours." ".$hourspel." Ago";
+                  } elseif($daycount>0){
+                      $counttime = $daycount." Days Ago";
+                  } ?>
+
+                  <div class="desc">
+                      <div class="thumb">
+                          <span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
+                      </div>
+                      <div class="details">
+                          <p>
+                              <muted>{{$counttime}}</muted>
+                              <br/>
+                              <a href="/viewemployee/{{$report->user->id}}">{{$report->user->name}}</a> submitted daily report.<br/>
+                          </p>
+                      </div>
+                  </div>
+          @endforeach
+            <!-- USERS ONLINE SECTION -->
+            <!-- CALENDAR-->
+            <!-- / calendar -->
+          </div>
+          </div>
     </section>
-
   </section>
 
   <footer class="site-footer">
@@ -149,7 +168,6 @@
       <p>
         &copy; Copyrights <strong>TNC IT Group Management System </strong>. All Rights Reserved
       </p>
-
       <a href="#" class="go-top">
         <i class="fa fa-angle-up"></i>
       </a>

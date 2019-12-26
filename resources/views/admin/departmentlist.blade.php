@@ -49,7 +49,7 @@
 			@endforeach
 
 		</div>
-		<div class="col-lg-3 ds">
+                <div class="col-lg-3 ds">
 			<!--COMPLETED ACTIONS DONUTS CHART-->
             <div id="calendar" class="mb" style="margin-top: 20px;">
 				<div class="panel green-panel no-margin">

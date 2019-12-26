@@ -211,11 +211,11 @@ if (window.sidebar){
     <script src="lib/jquery.scrollTo.min.js"></script>
     <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
 
-    <script type="text/javascript" language="javascript" src="asset/lib/advanced-datatable/js/jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="/asset/lib/advanced-datatable/js/jquery.js"></script>
 
 
-    <script type="text/javascript" language="javascript" src="asset/lib/advanced-datatable/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="asset/lib/advanced-datatable/js/DT_bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="/asset/lib/advanced-datatable/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/asset/lib/advanced-datatable/js/DT_bootstrap.js"></script>
     <!--common script for all pages-->
 
 
@@ -267,7 +267,7 @@ if (window.sidebar){
        */
        var nCloneTh = document.createElement('th');
        var nCloneTd = document.createElement('td');
-       nCloneTd.innerHTML = '<img src="asset/lib/advanced-datatable/images/details_open.png">';
+       nCloneTd.innerHTML = '<img src="/asset/lib/advanced-datatable/images/details_open.png">';
        nCloneTd.className = "center";
 
        $('#hidden-table-info thead tr').each(function() {

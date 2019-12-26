@@ -65,7 +65,7 @@ Route::get('/management', 'ManagementController@management')
 ->name('management');
 
 Route::get('/mviewdepartment/{d_id}', 'ManagementController@mViewSubdepartment')
-->middleware('is_management', 'admin')
+->middleware('is_management')
 ->name('mviewdepartment');
 
 Route::get('mviewemployee/{id}', 'ManagementController@mviewEmployee')
@@ -149,3 +149,57 @@ Route::get('adminviewsubdepartment/{id}', 'AdminController@viewSubdepartment')
 Route::get('adminviewemployee/{id}', 'AdminController@viewEmployee')
     ->middleware('admin')
     ->name('adminviewemployee');
+
+Route::get('/submitnewreport', 'HomeController@submitnewreport')->middleware('admin');
+Route::post('/submitnewreport', 'HomeController@submitnewreport')->middleware('admin');
+
+Route::get('/postuserReport', 'HomeController@postuserReport')->middleware('admin');
+Route::post('/postuserReport', 'HomeController@postuserReport')->middleware('admin');
+
+Route::get('overtimerequest', 'HomeController@overtimerequest');
+Route::post('overtimerequest', 'HomeController@overtimerequest');
+Route::get('/postOtUserRequest', 'HomeController@postOtUserRequest');
+Route::post('/postOtUserRequest', 'HomeController@postOtUserRequest');
+
+Route::get('mgrotapproval/{n_id}/{u_id}/{r_date}/{mgr_id}/{report_uid}', 'HomeController@mgrotapproval')->name('mgrotapproval');
+Route::post('mgrotapproval/{n_id}/{u_id}/{r_date}/{mgr_id}/{report_uid}', 'HomeController@mgrotapproval')->name('mgrotapproval');
+Route::get('otMgrApprovedreq/{n_id}/{r_date}/{u_id}/{report_uid}', 'ManagementController@otMgrApprovedreq');
+Route::get('otMgrDisapprovedreq/{n_id}/{u_id}/{report_uid}/{ot_date}', 'ManagementController@otMgrDisapprovedreq');
+Route::get('topmgmtapproval/{n_id}/{u_id}/{ot_date}', 'HomeController@topmgmtapproval');
+Route::post('topmgmtapproval/{n_id}/{u_id}/{ot_date}', 'HomeController@topmgmtapproval');
+Route::get('otTopmgtApprovedreq/{n_id}/{ot_date}/{u_id}/{report_uid}', 'ManagementController@otTopmgtApprovedreq');
+Route::get('otTopmgtDisapprovedreq/{n_id}/{u_id}/{report_uid}/{ot_date}', 'ManagementController@otTopmgtDisapprovedreq');
+Route::get('otapproved/{n_id}', 'HomeController@otapproved');
+Route::get('otrejected/{n_id}', 'HomeController@otrejected');
+Route::get('otrequests', 'HomeController@otrequests');
+Route::get('otmgmtrequests', 'ManagementController@otmgmtrequests');
+Route::get('otempdetails/{u_id}', 'HomeController@otempDetails');
+Route::get('alltopmtotrequests', 'HomeController@alltopmtotrequests');
+Route::get('allotempdetails/{u_id}', 'HomeController@allotempdetails');
+Route::get('otsubmgmtrequests', 'ManagementController@otsubmgmtrequests');
+
+Route::get('otselectrequests', 'HomeController@otselectrequests');
+Route::get('printotrequests/{f_date}/{t_date}', 'HomeController@printotrequests')->name('printotrequests');
+
+Route::get('downloadcsv', 'ManagementController@downloadcsv');
+Route::get('downloadReport', 'ManagementController@downloadReport');
+Route::post('downloadReport', 'ManagementController@downloadReport');
+
+Route::get('otempRequest/{n_id}/{u_id}/{r_date}/{report_uid}', 'ManagementController@otempRequest');
+Route::post('otempRequest/{n_id}/{u_id}/{r_date}/{report_uid}', 'ManagementController@otempRequest');
+
+Route::get('otHRApprovedreq/{n_id}/{ot_date}/{u_id}/{report_uid}', 'ManagementController@otHRApprovedreq');
+Route::get('otHRDisapprovedreq/{n_id}/{u_id}/{report_uid}/{ot_date}', 'ManagementController@otHRDisapprovedreq');
+
+Route::get('otHRApproved/{n_id}', 'ManagementController@otHRApproved');
+Route::get('otHRDisapproved/{n_id}', 'ManagementController@otHRDisapproved');
+
+//Download Filtered Reports
+Route::get('printfilterreport', 'ManagementController@printfilterreport')
+    ->middleware('is_topmanagement')
+    ->name('printfilterreport');
+Route::get('downloadReportEmp', 'ManagementController@downloadReportEmp');
+Route::post('downloadReportEmp', 'ManagementController@downloadReportEmp');
+Route::get('downloadDeptReport', 'ManagementController@downloadDeptReport');
+Route::post('downloadDeptReport', 'ManagementController@downloadDeptReport');
+Route::post('select-ajax', ['as'=>'select-ajax','uses'=>'ManagementController@selectAjax']);

@@ -100,8 +100,55 @@
 </head>
 <body>
 
-<img class="bck-img" src="asset/img/bck.png" >
+{{--<div class="col-lg-12">
+
+    <div class="row">
+        <div class="col s3" style='border: 1px solid aliceblue; width: 600px; background-image:url("asset/img/bck.png")'>
+            <img class="bck-img" src="/asset/img/bck.png" >
+            <h2>Who will be the first employee of the month?</h2>
+        </div>
+        <div class="col s9" style="border: 1px solid aliceblue">
+            <img class="bck-img" src="/asset/img/bck.png" >
+            <div class="flex-center position-ref full-height">
+                @if (Route::has('login'))
+                    <div class="top-right links">
+                        @auth
+                            <a href="{{ url('/home') }}">Home</a>
+                        @else
+                            <a href="{{ route('login') }}">Login</a>
+
+                            @if (Route::has('register'))
+                            <!-- <a href="{{ route('register') }}">Register</a> -->
+                            @endif
+                        @endauth
+                    </div>
+                @endif
+
+                <div class="content">
+                    <img src="/asset/img/abbc.png" height="200px">
+                    <div class="title m-b-md">
+                        TNC IT Group <br>Management System
+
+                    </div>
+
+                    <hr>
+                    <div style="padding-top: 30px" class="btm-br">
+                        <img src="/asset/img/tnc.svg" height="30px" class="tnc"> &nbsp
+                        <img src="/asset/img/adn_logo.png" height="30px">
+                        <img src="/asset/img/logo.png" height="30px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>--}}
+<div class="col-lg-6"></div>
+
+<div class="col-lg-6">
+<img class="bck-img" src="/asset/img/bck.png" >
+
 <div class="flex-center position-ref full-height">
+
     @if (Route::has('login'))
         <div class="top-right links">
             @auth
@@ -117,25 +164,19 @@
     @endif
 
     <div class="content">
-        <img src="asset/img/abbc.png" height="200px">
+        <img src="/asset/img/abbc.png" height="200px">
         <div class="title m-b-md">
             TNC IT Group <br>Management System
-
         </div>
-
         <hr>
         <div style="padding-top: 30px" class="btm-br">
-            <img src="asset/img/tnc.svg" height="30px" class="tnc"> &nbsp
-            <img src="asset/img/adn_logo.png" height="30px">
-            <img src="asset/img/logo.png" height="30px">
+            <img src="/asset/img/tnc.svg" height="30px" class="tnc"> &nbsp;
+            <img src="/asset/img/adn_logo.png" height="30px">
+            <img src="/asset/img/logo.png" height="30px">
         </div>
-
-
-
-
-
-
     </div>
 </div>
+</div>
+
 </body>
 </html>

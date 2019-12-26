@@ -2,23 +2,19 @@
     <div id="sidebar" class="nav-collapse ">
         <ul class="sidebar-menu" id="nav-accordion">
             <h5 class="centered">{{Auth::user()->name}}</h5>
-
             <?php
             $missrepactive = '';
             if(isset($filterdate) && $filterdate!=''){ $missrepactive= 'active'; }
             if(request()->is('listmissreports')){ $missrepactive= 'active'; }
             ?>
 
-
             @if(Auth::user()->type === 'topmanagement')
-
                 <li class="mt">
                     <a href="{{ url('topmanagement') }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Departments</span>
                     </a>
                 </li>
-
 
                 <li class="sub-menu dcjq-parent-li">
                     <a href="javascript:;"  class="dcjq-parent {{$missrepactive}}">
@@ -35,12 +31,33 @@
                     </ul>
                 </li>
 
+                <li class="sub-menu">
+                    <a href="{{ url('alltopmtotrequests') }}">
+                        <i class="fa fa-list"></i>
+                        <span>OverTime</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="{{ url('printfilterreport') }}">
+                        <i class="fa fa-list"></i>
+                        <span>Print Report</span>
+                    </a>
+                </li>
+
             @elseif(Auth::user()->type === 'employee')
 
                 <li class="mt">
                     <a href="{{ url('home') }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="{{ url('otrequests') }}">
+                        <i class="fa fa-list"></i>
+                        <span>OverTime</span>
                     </a>
                 </li>
 
@@ -55,8 +72,15 @@
 
                 <li class="sub-menu">
                     <a href="{{ url('home') }}">
-                        <i class="fa fa-bookmark"></i>
+                        <i class="fa fa-list"></i>
                         <span>My Report</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="{{ url('otmgmtrequests') }}">
+                        <i class="fa fa-list"></i>
+                        <span>OverTime</span>
                     </a>
                 </li>
 
@@ -75,6 +99,13 @@
                     </ul>
                 </li>
 
+                <li class="sub-menu">
+                    <a href="{{ url('downloadcsv') }}">
+                        <i class="fa fa-download"></i>
+                        <span>Export CSV</span>
+                    </a>
+                </li>
+
 
             @elseif(Auth::user()->type === 'submanagement')
 
@@ -87,8 +118,15 @@
 
                 <li class="sub-menu">
                     <a href="{{ url('home') }}">
-                        <i class="fa fa-bookmark"></i>
+                        <i class="fa fa-list"></i>
                         <span>My Report</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="{{ url('otsubmgmtrequests') }}">
+                        <i class="fa fa-list"></i>
+                        <span>OverTime</span>
                     </a>
                 </li>
 
@@ -145,6 +183,13 @@
                     </a>
                 </li>
 
+                <li class="sub-menu">
+                    <a href="{{ url('/submitnewreport') }}">
+                        <i class="fa fa-plus-square-o"></i>
+                        <span>Add Report</span>
+                    </a>
+                </li>
+
                 <li class="sub-menu dcjq-parent-li">
                     <a href="javascript:;"  class="dcjq-parent {{$missrepactive}}">
                         <i class="fa fa-list"></i>
@@ -158,6 +203,13 @@
                         <li <?php if(isset($_GET['d']) && $_GET['d']!=''){ echo 'class="active"'; } ?>><a href="{{ url('missedreport')."?d=".$d }}">Last Day</a></li>
                         <li <?php if(isset($_GET['dweek']) && $_GET['dweek']!=''){ echo 'class="active"'; } ?>><a href="{{ url('missedreport')."?dweek=".$lweek }}">Last 7 Days</a></li>
                     </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="{{ url('alltopmtotrequests') }}">
+                        <i class="fa fa-list"></i>
+                        <span>OverTime</span>
+                    </a>
                 </li>
 
             @endif

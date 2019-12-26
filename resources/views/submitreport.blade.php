@@ -7,23 +7,26 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 	jQuery(document).ready(function( $ ) {
-		var today = new Date();
-		$('.newdate-picker').datepicker({
-			dateFormat: 'yy-mm-dd',
-			autoclose:true,
-			endDate: "today",
-			maxDate: 0,
-			minDate: -3
-		}).on('changeDate', function (ev) {
-			$(this).datepicker('hide');
-		});
-
-
-		$('.newdate-picker').keyup(function () {
-			if (this.value.match(/[^0-9]/g)) {
-				this.value = this.value.replace(/[^0-9^-]/g, '');
-			}
-		});
+	     Date.prototype.yyyymmdd = function () {
+            var dd = this.getDate().toString();
+            var mm = (this.getMonth() + 1).toString();
+            var yyyy = this.getFullYear().toString();
+            return (yyyy  + "-" + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" +  dd[0])) ;
+        };
+        $(".newdate-picker").datepicker({ dateFormat: "yy-mm-dd", minDate: -3, endDate: "today",
+            onSelect: function(_date, _datepicker){
+                var myDate = new Date(_date).yyyymmdd();
+                myDate.setDate(myDate.getDate());
+            }
+        });
+        $(".newdate-picker").on('change', function () {
+            var selectedDate = $(this).val();
+            var todaysDate = new Date().yyyymmdd();
+            if (selectedDate < todaysDate) {
+                alert('Please select the Valid Date');
+                $(this).val('');
+            }
+        });
 	});
 </script>
 <body>
@@ -43,7 +46,8 @@
 								<div class="form-group">
 									<label class="control-label col-md-2">Date</label>
 									<div class="col-md-3 col-xs-11">
-										<input class="form-control form-control-inline input-medium newdate-picker " size="16" type="text" name="date" id="date" required="" >
+										<input class="form-control form-control-inline input-medium newdate-picker "
+                                               type="text" name="date" id="validMinDatepicker" required="" >
 										<span class="help-block">Select date</span>
 									</div>
 								</div>
@@ -85,30 +89,30 @@
 		</section>
 	</section>
 
-	<script src="asset/lib/jquery/jquery.min.js"></script>
-	<script src="asset/lib/bootstrap/js/bootstrap.min.js"></script>
-	<script class="include" type="text/javascript" src="asset/lib/jquery.dcjqaccordion.2.7.js"></script>
-	<script src="asset/lib/jquery.scrollTo.min.js"></script>
-	<script src="asset/lib/jquery.nicescroll.js" type="text/javascript"></script>
+	<script src="/asset/lib/jquery/jquery.min.js"></script>
+	<script src="/asset/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script class="include" type="text/javascript" src="/asset/lib/jquery.dcjqaccordion.2.7.js"></script>
+	<script src="/asset/lib/jquery.scrollTo.min.js"></script>
+	<script src="/asset/lib/jquery.nicescroll.js" type="text/javascript"></script>
 	<!--common script for all pages-->
-	<script src="asset/lib/common-scripts.js"></script>
+	<script src="/asset/lib/common-scripts.js"></script>
 	<!--script for this page-->
-	<script src="asset/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="/asset/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<!--custom switch-->
-	<script src="asset/lib/bootstrap-switch.js"></script>
+	<script src="/asset/lib/bootstrap-switch.js"></script>
 	<!--custom tagsinput-->
-	<script src="asset/lib/jquery.tagsinput.js"></script>
+	<script src="/asset/lib/jquery.tagsinput.js"></script>
 	<!--custom checkbox & radio-->
-	<script type="text/javascript" src="asset/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/date.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
-	<script src="asset/lib/form-component.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-daterangepicker/moment.min.js"></script>
-	<script type="text/javascript" src="asset/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-	<script src="asset/lib/advanced-form-components.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/date.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+	<script src="/asset/lib/form-component.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="/asset/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script src="/asset/lib/advanced-form-components.js"></script>
 </body>
 </html>
